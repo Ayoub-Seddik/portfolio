@@ -1,0 +1,33 @@
+{
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "experience": "Experience",
+    "education": "Education",
+    "resume": "Resume",
+    "contact": "Contact",
+    "menu": "Menu"
+  },
+  "home": {
+    "title": "Hi, I’m Seddik Ayoub",  
+    "about": "Short about-me paragraph goes here.",
+    "skillsTitle": "Skills",
+    "skillsCta": "View all skills",
+    "hobbiesTitle": "Hobbies",
+    "hobbiesCta": "More about me"
+  },
+  "common": {
+    "backHome": "Go back home"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "This page doesn’t exist."
+  },
+  "pages": {
+    "projects": { "title": "Projects" },
+    "experience": { "title": "Experience" },
+    "education": { "title": "Education" },
+    "resume": { "title": "Resume" },
+    "contact": { "title": "Contact" }
+  }
+}
