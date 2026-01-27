@@ -1,0 +1,153 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "projects": "Projets",
+    "experience": "Expérience | Éducation",
+    "resume": "CV",
+    "contact": "Contact",
+    "menu": "Menu"
+  },
+
+  "home": {
+    "heroTitle": "Salut, je m’appelle {{name}}",
+    "heroSubtitle": "Je crée des applications web modernes et des services backend.",
+    "heroTags": {
+      "react": "React",
+      "spring": "Spring Boot",
+      "sql": "SQL"
+    },
+    "hobbiesTitle": "Loisirs",
+    "hobbies": {
+      "gym": {
+        "title": "Gym / Fitness",
+        "desc": "Rester actif et discipliné."
+      },
+      "gaming": {
+        "title": "Jeux vidéo",
+        "desc": "Stratégie et travail d’équipe."
+      },
+      "cooking": {
+        "title": "Cuisine",
+        "desc": "Apprendre de nouvelles recettes."
+      },
+      "learning": {
+        "title": "Apprendre la tech",
+        "desc": "Toujours améliorer mes compétences."
+      }
+    },
+    "skillsTitle": "Compétences"
+  },
+
+  "projects": {
+    "title": "Projets",
+    "subtitle": "Une sélection de projets que j’ai réalisés.",
+    "whatIDid": "Ce que j’ai fait",
+    "techStack": "Technos",
+    "languages": "Langages",
+    "frameworks": "Frameworks",
+    "links": "Liens",
+    "liveSite": "Site en ligne",
+    "sourceCode": "Code source"
+  },
+
+  "experiencePage": {
+    "title": "Expérience & Éducation",
+    "subtitle": "Un aperçu de mon parcours professionnel et académique.",
+    "sections": {
+      "experience": "Expérience",
+      "education": "Éducation"
+    },
+    "experience": [
+      {
+        "title": "Représentant du service à la clientèle",
+        "org": "Rogers Communications",
+        "dates": "Juin 2019 — Présent",
+        "bullets": [
+          "Offrir du soutien aux clients en résolvant les problèmes de facturation et de compte, tout en maintenant une expérience respectueuse et positive.",
+          "Spécialisé dans les systèmes hérités et actuels sur plusieurs gammes de produits; ressource de référence pour les cas complexes et le dépannage.",
+          "Reconnu pour la qualité du service, l’adaptabilité et la constance pendant six ans dans un environnement rapide et axé sur le client."
+        ],
+        "tech": []
+      },
+      {
+        "title": "DM Creation — Application Web Full Stack (Projet d’équipe)",
+        "org": "Projet client externe (école)",
+        "dates": "Sep 2025 — Fév 2026",
+        "bullets": [
+          "Développement d’une application web full stack permettant aux clients d’acheter des décorations et d’optimiser le traitement des commandes via un système personnalisé.",
+          "Lead Developer : architecture du système, design UI/UX, présentations client et gestion d’une équipe de 5 développeurs."
+        ],
+        "tech": [
+          "Java",
+          "Spring Boot",
+          "Microservices",
+          "React",
+          "TypeScript",
+          "HTML5",
+          "CSS3",
+          "Figma",
+          "Git/GitHub",
+          "REST APIs"
+        ]
+      },
+      {
+        "title": "Champlain Pet Clinic — Application Web Full Stack (Projet d’équipe)",
+        "org": "Projet scolaire",
+        "dates": "Sep 2025 — Nov 2025",
+        "bullets": [
+          "Création d’une application microservices full stack pour gérer les animaux, rendez-vous, commandes et inventaire (clients et employés).",
+          "Contribution au sein de l’équipe produit, avec rotation des rôles : Product Owner, Scrum Master et développeur."
+        ],
+        "tech": [
+          "Java",
+          "Spring Boot",
+          "Microservices",
+          "React",
+          "TypeScript",
+          "HTML5",
+          "CSS3",
+          "Figma",
+          "Git/GitHub",
+          "REST APIs"
+        ]
+      }
+    ],
+    "educationItems": [
+      {
+        "program": "Informatique",
+        "school": "Collège Champlain St-Lambert",
+        "dates": "Prévu : juin 2026"
+      }
+    ]
+  },
+
+  "resumePage": {
+    "title": "CV",
+    "subtitle": "Téléchargez une copie de mon CV (PDF).",
+    "download": "Télécharger le CV",
+    "open": "Ouvrir dans un nouvel onglet"
+  },
+
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Vous voulez me contacter ? Envoyez-moi un message et je vous répondrai.",
+    "form": {
+      "name": "Votre nom",
+      "email": "Votre courriel",
+      "message": "Votre message",
+      "send": "Envoyer"
+    },
+    "validation": {
+      "nameRequired": "Le nom est requis.",
+      "emailRequired": "Le courriel est requis.",
+      "emailInvalid": "Veuillez entrer un courriel valide.",
+      "messageRequired": "Le message est requis.",
+      "messageTooShort": "Le message doit contenir au moins 10 caractères."
+    },
+    "success": {
+      "title": "Message envoyé !",
+      "message": "Merci pour votre message. Je répondrai dès que possible.",
+      "newMessage": "Envoyer un autre message"
+    }
+  }
+}

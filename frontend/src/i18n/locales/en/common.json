@@ -1,0 +1,14 @@
+{
+  "common": {
+    "backHome": "Go back home",
+    "add": "Add",
+    "update": "Update",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "This page doesn’t exist."
+  }
+}

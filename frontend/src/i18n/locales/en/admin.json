@@ -1,0 +1,65 @@
+{
+  "admin": {
+    "skills": { "title": "Admin · Skills" }
+  },
+
+  "skills": {
+    "empty": "No skills yet. Add some from the admin page.",
+    "form": {
+      "name": "Skill name (e.g., React)",
+      "level": "Level (1–10)",
+      "comment": "Comment (optional)"
+    },
+    "validation": {
+      "nameRequired": "Skill name is required.",
+      "levelRange": "Level must be between 1 and 10."
+    }
+  },
+  
+  "adminExperience": {
+    "title": "Admin · Experience & Education",
+    "subtitle": "Edit English and French content. This is saved locally for now (mock backend).",
+    "language": {
+      "en": "English",
+      "fr": "French"
+    },
+    "tabs": {
+      "experience": "Experience",
+      "education": "Education"
+    },
+    "actions": {
+      "addItem": "Add item",
+      "save": "Save",
+      "reset": "Reset to defaults",
+      "addBullet": "Add bullet",
+      "remove": "Remove"
+    },
+    "fields": {
+      "title": "Title",
+      "org": "Organization",
+      "dates": "Dates",
+      "bullets": "Bullets",
+      "tech": "Tech (comma-separated)",
+      "program": "Program",
+      "school": "School"
+    },
+    "status": {
+      "saved": "Saved!",
+      "reset": "Reset to defaults."
+    }
+  },
+
+  "adminResume": {
+    "title": "Admin · Resume",
+    "subtitle": "Upload and manage the English and French resumes (PDF).",
+    "english": "English resume (PDF)",
+    "french": "French resume (PDF)",
+    "chooseFile": "Choose PDF",
+    "current": "Current file",
+    "notSet": "Not set",
+    "save": "Save",
+    "remove": "Remove",
+    "saved": "Saved!",
+    "invalidType": "Please upload a PDF file."
+  }
+}

@@ -12,7 +12,7 @@ export default function LanguageToggle() {
         <button
             type="button"
             onClick={toggleLanguage}
-            className="relative inline-flex h-9 w-20 items-center rounded-full border bg-white px-1 transition-colors hover:bg-gray-50"
+            className="relative inline-flex h-9 w-20 items-center rounded-full border border-[var(--border)] bg-[var(--surface)] px-1 hover:bg-[var(--surface-2)] transition-colors"
             aria-label="Toggle Language"
             aria-pressed={isFr}
         >
@@ -28,11 +28,11 @@ export default function LanguageToggle() {
             {/* The slider */}
             <span
                 className={[
-                    "inline-flex h-7 w-9 items-center justify-center rounded-full border bg-white text-xs font-bold shadow-sm transition-transform",
+                    "inline-flex h-7 w-9 items-center justify-center rounded-full bg-[var(--bg)] text-xs font-bold shadow-sm transition-transform",
                     isFr ? "translate-x-9" : "translate-x-0",
                 ].join(" ")}
-            >
-                {isFr ? "FR" : "EN"}
+    >
+                {isFr ? <span className="text-[var(--red)]">FR</span> : <span className="text-[var(--red)]">EN</span>}
             </span>
         </button>
     );

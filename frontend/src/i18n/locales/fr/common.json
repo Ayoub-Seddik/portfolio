@@ -1,0 +1,14 @@
+{
+  "common": {
+    "backHome": "Retour à l’accueil",
+    "add": "Ajouter",
+    "update": "Mettre à jour",
+    "cancel": "Annuler",
+    "edit": "Modifier",
+    "delete": "Supprimer"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Cette page n’existe pas."
+  }
+}

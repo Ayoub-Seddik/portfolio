@@ -1,0 +1,65 @@
+{
+  "admin": {
+    "skills": { "title": "Admin · Compétences" }
+  },
+
+  "skills": {
+    "empty": "Aucune compétence pour l’instant. Ajoutez-en depuis la page admin.",
+    "form": {
+      "name": "Nom de compétence (ex. React)",
+      "level": "Niveau (1–10)",
+      "comment": "Commentaire (optionnel)"
+    },
+    "validation": {
+      "nameRequired": "Le nom de la compétence est requis.",
+      "levelRange": "Le niveau doit être entre 1 et 10."
+    }
+  },
+
+  "adminExperience": {
+    "title": "Admin · Expérience & Éducation",
+    "subtitle": "Modifiez le contenu en anglais et en français. Enregistré localement pour l’instant (mock backend).",
+    "language": {
+      "en": "Anglais",
+      "fr": "Français"
+    },
+    "tabs": {
+      "experience": "Expérience",
+      "education": "Éducation"
+    },
+    "actions": {
+      "addItem": "Ajouter un élément",
+      "save": "Enregistrer",
+      "reset": "Réinitialiser",
+      "addBullet": "Ajouter une puce",
+      "remove": "Supprimer"
+    },
+    "fields": {
+      "title": "Titre",
+      "org": "Organisation",
+      "dates": "Dates",
+      "bullets": "Points",
+      "tech": "Technos (séparées par des virgules)",
+      "program": "Programme",
+      "school": "École"
+    },
+    "status": {
+      "saved": "Enregistré !",
+      "reset": "Réinitialisé."
+    }
+  },
+
+  "adminResume": {
+    "title": "Admin · CV",
+    "subtitle": "Téléversez et gérez les CV anglais et français (PDF).",
+    "english": "CV anglais (PDF)",
+    "french": "CV français (PDF)",
+    "chooseFile": "Choisir un PDF",
+    "current": "Fichier actuel",
+    "notSet": "Non défini",
+    "save": "Enregistrer",
+    "remove": "Supprimer",
+    "saved": "Enregistré !",
+    "invalidType": "Veuillez téléverser un fichier PDF."
+  }
+}

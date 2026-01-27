@@ -1,0 +1,153 @@
+{
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "experience": "Experience | Education",
+    "resume": "Resume",
+    "contact": "Contact",
+    "menu": "Menu"
+  },
+
+  "home": {
+    "heroTitle": "Hi, I’m {{name}}",
+    "heroSubtitle": "I build modern web apps and backend services.",
+    "heroTags": {
+      "react": "React",
+      "spring": "Spring Boot",
+      "sql": "SQL"
+    },
+    "hobbiesTitle": "Hobbies",
+    "hobbies": {
+      "gym": {
+        "title": "Gym / Fitness",
+        "desc": "Staying active and disciplined."
+      },
+      "gaming": {
+        "title": "Gaming",
+        "desc": "Strategy and teamwork."
+      },
+      "cooking": {
+        "title": "Cooking",
+        "desc": "Learning new recipes."
+      },
+      "learning": {
+        "title": "Learning Tech",
+        "desc": "Always improving my skills."
+      }
+    },
+    "skillsTitle": "Skills"
+  },
+
+  "projects": {
+    "title": "Projects",
+    "subtitle": "A selection of work I’ve built and shipped.",
+    "whatIDid": "What I did",
+    "techStack": "Tech stack",
+    "languages": "Languages",
+    "frameworks": "Frameworks",
+    "links": "Links",
+    "liveSite": "Live site",
+    "sourceCode": "Source code"
+  },
+
+  "experiencePage": {
+    "title": "Experience & Education",
+    "subtitle": "A timeline of my professional and academic background.",
+    "sections": {
+      "experience": "Experience",
+      "education": "Education"
+    },
+    "experience": [
+      {
+        "title": "Customer Service Representative",
+        "org": "Rogers Communications",
+        "dates": "June 2019 — Present",
+        "bullets": [
+          "Provide support to customers by resolving billing and account issues, ensuring a respectful and positive service experience.",
+          "Specialized in both legacy and current systems across product lines; became a go-to resource for complex troubleshooting.",
+          "Recognized for high-quality service, adaptability, and consistency over six years in a fast-paced customer-focused environment."
+        ],
+        "tech": []
+      },
+      {
+        "title": "DM Creation — Full Stack Web Application (Group Project)",
+        "org": "School External Client Project",
+        "dates": "Sep 2025 — Feb 2026",
+        "bullets": [
+          "Developed a full-stack web application for customers to purchase party decorations and streamline order fulfillment through a custom ordering system.",
+          "Served as Lead Developer: responsible for system architecture, UI/UX design, client presentations, and managing a 5-member team."
+        ],
+        "tech": [
+          "Java",
+          "Spring Boot",
+          "Microservices",
+          "React",
+          "TypeScript",
+          "HTML5",
+          "CSS3",
+          "Figma",
+          "Git/GitHub",
+          "REST APIs"
+        ]
+      },
+      {
+        "title": "Champlain Pet Clinic — Full Stack Web Application (Group Project)",
+        "org": "School Project",
+        "dates": "Sep 2025 — Nov 2025",
+        "bullets": [
+          "Built a full-stack microservices web application for customers and employees to manage pets, appointments, orders, and inventory.",
+          "Contributed as a member of the Product Team, rotating roles as Product Owner, Scrum Master, and Software Developer."
+        ],
+        "tech": [
+          "Java",
+          "Spring Boot",
+          "Microservices",
+          "React",
+          "TypeScript",
+          "HTML5",
+          "CSS3",
+          "Figma",
+          "Git/GitHub",
+          "REST APIs"
+        ]
+      }
+    ],
+    "educationItems": [
+      {
+        "program": "Computer Science",
+        "school": "Champlain College St-Lambert",
+        "dates": "Expected June 2026"
+      }
+    ]
+  },
+
+  "resumePage": {
+    "title": "Resume",
+    "subtitle": "Download a copy of my resume (PDF).",
+    "download": "Download resume",
+    "open": "Open in new tab"
+  },
+
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Want to reach out? Send me a message and I’ll get back to you.",
+    "form": {
+      "name": "Your name",
+      "email": "Your email",
+      "message": "Your message",
+      "send": "Send message"
+    },
+    "validation": {
+      "nameRequired": "Name is required.",
+      "emailRequired": "Email is required.",
+      "emailInvalid": "Please enter a valid email.",
+      "messageRequired": "Message is required.",
+      "messageTooShort": "Message must be at least 10 characters."
+    },
+    "success": {
+      "title": "Message sent!",
+      "message": "Thanks for reaching out. I’ll reply as soon as I can.",
+      "newMessage": "Send another message"
+    }
+  }
+}

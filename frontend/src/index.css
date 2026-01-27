@@ -1,1 +1,19 @@
 @import "tailwindcss";
+
+:root {
+  /* Backgrounds */
+  --bg: #0f1115;         /* charcoal, not pure black */
+  --surface: #161a22;    /* cards/panels */
+  --surface-2: #1b2030;  /* hover/secondary */
+
+  /* Text */
+  --text: #e7e9ee;       /* soft white */
+  --muted: #a7adbb;      /* muted gray */
+
+  /* Borders */
+  --border: rgba(255, 255, 255, 0.08);
+
+  /* Accent */
+  --red: #ff3b3b;        /* lively red */
+  --red-dark: #e12d2d;
+}
