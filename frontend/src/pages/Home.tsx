@@ -79,44 +79,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SKILLS */}
-      <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm">
-        <h2 className="text-xl font-semibold text-[var(--text)]">
-          {t("home.skillsTitle")}
-        </h2>
-
-        <ul className="mt-4 grid gap-4 sm:grid-cols-2">
-          {skillsMock.map((skill) => (
-            <li
-              key={skill.id}
-              className="rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-5 hover:bg-[var(--surface-2)] transition-colors"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-lg font-semibold text-[var(--text)]">
-                    {skill.name}
-                  </p>
-
-                  {/* Note: skill.comment comes from data (mock now, backend later) */}
-                  {skill.comment ? (
-                    <p className="mt-1 text-sm text-[var(--muted)]">
-                      {skill.comment}
-                    </p>
-                  ) : null}
-                </div>
-
-                <span className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-xs text-[var(--muted)]">
-                  {skill.level}/10
-                </span>
-              </div>
-
-              <div className="mt-4">
-                <SkillBar level={skill.level} />
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
     </main>
   );
 }

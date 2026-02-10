@@ -7,11 +7,13 @@ import Resume from "./pages/Resume";
 import Contact from "./pages/Contact";
 import Skills from "./pages/Skills";
 
+import AdminDashboard from "./pages/AdminDashboard";
 import AdminLogin from "./admin/AdminLogin";
 import AdminSkills from "./pages/AdminSkills";
 import AdminResume from "./pages/AdminResume";
 import AdminProjects from "./pages/AdminProjects";
-import AdminExperienceEducation from "./admin/AdminExperienceEducation";
+import AdminExperience from "./pages/AdminExperience";
+import AdminEducation from "./pages/AdminEducation";
 
 import NotFound from "./pages/NotFound";
 
@@ -20,7 +22,7 @@ import AdminGuard from "./admin/AdminGuard";
 
 export default function App() {
   return (
-    <div className="min-h-screen text-[var(--text)] bg-gradient-to-b from-[var(--bg)] to-black">
+    <div className="min-h-screen text-[var(--text)] bg-[#262626]">
       <Navbar />
 
       <Routes>
@@ -34,10 +36,12 @@ export default function App() {
         {/* All admin routes protected */}
         <Route path="/admin" element={<AdminGuard />}>
           <Route path="login" element={<AdminLogin />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="skills" element={<AdminSkills />} />
           <Route path="resume" element={<AdminResume />} />
-          <Route path="experience" element={<AdminExperienceEducation />} />
+          <Route path="experience" element={<AdminExperience />} />
           <Route path="projects" element={<AdminProjects />} />
+          <Route path="educations" element={<AdminEducation />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

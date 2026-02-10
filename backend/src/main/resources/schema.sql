@@ -7,6 +7,34 @@ CREATE TABLE IF NOT EXISTS projects (
     live_url VARCHAR(1000),
     github_url VARCHAR(1000),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
-    );
+);
 
 CREATE INDEX IF NOT EXISTS idx_projects_title ON projects(title);
+
+CREATE TABLE IF NOT EXISTS education (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    level VARCHAR(50) NOT NULL,
+    school VARCHAR(255) NOT NULL,
+    program VARCHAR(255) NOT NULL,
+    status VARCHAR(30) NOT NULL,
+    completed_year INT,
+    sort_order INT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS skills (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    category VARCHAR(50) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    sort_order INT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS experience (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    company VARCHAR(255) NOT NULL,
+    position VARCHAR(255) NOT NULL,
+    start_year INT NOT NULL,
+    end_year INT,
+    is_present BOOLEAN NOT NULL DEFAULT FALSE,
+    summary VARCHAR(2000) NOT NULL,
+    sort_order INT NOT NULL
+);

@@ -23,7 +23,7 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--border)] bg-[var(--bg)]/80 backdrop-blur">
+    <header className="sticky top-0 z-50  bg-[#262626]">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
         <nav className="hidden items-center gap-6 md:flex">
           {NAV_ITEMS.map((item) => (
@@ -41,7 +41,7 @@ export default function Navbar() {
           {isAdmin ? (
             <>
               <Link
-                to="/admin/projects"
+                to="/admin/dashboard"
                 className="rounded-lg border border-[var(--border)] px-3 py-1 text-sm text-[var(--text)] hover:border-[var(--red)] hover:text-[var(--red)] transition"
               >
                 Admin

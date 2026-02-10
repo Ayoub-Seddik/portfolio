@@ -2,18 +2,19 @@
 
 :root {
   /* Backgrounds */
-  --bg: #0f1115;         /* charcoal, not pure black */
-  --surface: #161a22;    /* cards/panels */
-  --surface-2: #1b2030;  /* hover/secondary */
+  --bg: #0f1115;          /* keep for page + inputs */
+  --surface: #1e1e1e;     /* cards/panels */
+  --surface-2: #1e1e1e;   /* hover/secondary */
 
   /* Text */
-  --text: #e7e9ee;       /* soft white */
-  --muted: #a7adbb;      /* muted gray */
+  --text: #e7e9ee;
+  --muted: #a7adbb;
 
   /* Borders */
   --border: rgba(255, 255, 255, 0.08);
 
   /* Accent */
-  --red: #ff3b3b;        /* lively red */
+  --red: #ff3b3b;
   --red-dark: #e12d2d;
 }
+

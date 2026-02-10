@@ -150,16 +150,6 @@ export default function AdminProjects() {
           <h1 className="text-3xl font-bold text-[var(--text)]">Admin</h1>
           <p className="mt-1 text-[var(--muted)]">Manage your portfolio projects.</p>
         </div>
-
-        <button
-          onClick={() => {
-            clearAdminCreds();
-            window.location.reload();
-          }}
-          className="rounded-xl border border-[var(--border)] bg-[var(--bg)] px-4 py-2 text-sm font-semibold text-[var(--text)] hover:border-[var(--red)] hover:text-[var(--red)]"
-        >
-          Logout
-        </button>
       </div>
 
       {err && (

@@ -1,25 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getExperience } from "../data/experienceStore";
 
-type TimelineItem = {
-  title: string;
-  org: string;
-  dates: string;
-  bullets: string[];
-  tech?: string[];
-};
+import type { Skill } from "../api/skillsApi";
+import { listSkills } from "../api/skillsApi";
 
-type EducationItem = {
-  program: string;
-  school: string;
-  dates: string;
-};
+import type { Education } from "../api/educationApi";
+import { formatEducationStatus, listEducation } from "../api/educationApi";
 
-type OverridePayload = {
-  experience: TimelineItem[];
-  educationItems: EducationItem[];
-} | null;
+import type { Experience } from "../api/experienceApi";
+import { formatExperienceDates, listExperience } from "../api/experienceApi";
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
@@ -29,84 +18,129 @@ function Pill({ children }: { children: React.ReactNode }) {
   );
 }
 
-function TimelineCard({ item }: { item: TimelineItem }) {
+function CategoryPill({ children }: { children: React.ReactNode }) {
   return (
-    <li className="relative rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm hover:bg-[var(--surface-2)] transition-colors">
-      <span className="absolute -left-3 top-8 hidden h-3 w-3 rounded-full bg-[var(--red)] md:block" />
+    <span className="rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-3 py-1 text-xs font-semibold text-[var(--text)]">
+      {children}
+    </span>
+  );
+}
 
-      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="text-xl font-semibold text-[var(--text)]">{children}</h2>
+  );
+}
+
+function ExperienceRow({
+  item,
+  open,
+  onToggle,
+}: {
+  item: Experience;
+  open: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <li className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm hover:bg-[var(--surface-2)] transition-colors">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <h3 className="text-lg font-semibold text-[var(--text)]">
-            {item.title}
-          </h3>
-          <p className="mt-1 text-[var(--muted)]">{item.org}</p>
+          <p className="text-sm font-semibold text-[var(--muted)]">
+            {item.company}
+          </p>
+          <p className="mt-1 text-lg font-semibold text-[var(--text)]">
+            {item.position}
+          </p>
         </div>
 
-        <div className="shrink-0">
+        <div className="flex flex-wrap items-center gap-2 sm:justify-end">
+          <button
+            type="button"
+            onClick={onToggle}
+            className="rounded-xl bg-[var(--red)] px-3 py-2 text-sm font-semibold text-white hover:bg-[var(--red-dark)]"
+          >
+            {open ? "Hide responsibilities" : "View responsibilities"}
+          </button>
+
           <span className="rounded-full border border-[var(--border)] bg-[var(--bg)] px-3 py-1 text-xs text-[var(--muted)]">
-            {item.dates}
+            {formatExperienceDates(item)}
           </span>
         </div>
       </div>
 
-      <ul className="mt-4 space-y-2 text-sm">
-        {item.bullets.map((b, idx) => (
-          <li key={idx} className="flex gap-2">
-            <span className="mt-[6px] h-2 w-2 shrink-0 rounded-full bg-[var(--red)]" />
-            <span className="text-[var(--muted)]">{b}</span>
-          </li>
-        ))}
-      </ul>
-
-      {item.tech && item.tech.length > 0 ? (
-        <div className="mt-5 flex flex-wrap gap-2">
-          {item.tech.map((tech) => (
-            <Pill key={tech}>{tech}</Pill>
-          ))}
+      {open && (
+        <div className="mt-4 whitespace-pre-line text-sm text-[var(--muted)]">
+          {item.summary}
         </div>
-      ) : null}
+      )}
     </li>
   );
 }
 
-export default function Experience() {
-  const { t, i18n } = useTranslation();
+export default function ExperiencePage() {
+  const { t } = useTranslation();
 
-  const lang = i18n.language.toLowerCase().startsWith("fr") ? "fr" : "en";
+  const [skills, setSkills] = useState<Skill[]>([]);
+  const [education, setEducation] = useState<Education[]>([]);
+  const [experience, setExperience] = useState<Experience[]>([]);
 
-  const [override, setOverride] = useState<OverridePayload>(null);
-  const [loaded, setLoaded] = useState(false);
+  const [openId, setOpenId] = useState<number | null>(null);
 
-  // Load override ONCE per language
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState<string | null>(null);
+
   useEffect(() => {
     let cancelled = false;
 
     (async () => {
+      setLoading(true);
+      setErr(null);
+
       try {
-        const data = await getExperience(lang);
-        if (!cancelled) setOverride(data);
+        const [sk, edu, exp] = await Promise.all([
+          listSkills(),
+          listEducation(),
+          listExperience(),
+        ]);
+
+        if (cancelled) return;
+
+        setSkills(sk);
+        setEducation(edu);
+        setExperience(exp);
+      } catch (e: any) {
+        if (!cancelled) setErr(e?.message ?? "Failed to load page data");
       } finally {
-        if (!cancelled) setLoaded(true);
+        if (!cancelled) setLoading(false);
       }
     })();
 
     return () => {
       cancelled = true;
     };
-  }, [lang]);
+  }, []);
 
-  // Default from i18n
-  const i18nExperience = t("experiencePage.experience", {
-    returnObjects: true,
-  }) as TimelineItem[];
+  const skillsByCategory = useMemo(() => {
+    const grouped: Record<string, Skill[]> = {};
+    for (const s of skills) {
+      const cat = (s.category || "Other").trim();
+      (grouped[cat] ||= []).push(s);
+    }
+    for (const cat of Object.keys(grouped)) {
+      grouped[cat].sort(
+        (a, b) =>
+          (a.sortOrder ?? 0) - (b.sortOrder ?? 0) ||
+          (a.name ?? "").localeCompare(b.name ?? "")
+      );
+    }
+    return grouped;
+  }, [skills]);
 
-  const i18nEducation = t("experiencePage.educationItems", {
-    returnObjects: true,
-  }) as EducationItem[];
-
-  // Use override if it exists, otherwise fallback to i18n
-  const experience = override?.experience ?? i18nExperience;
-  const educationItems = override?.educationItems ?? i18nEducation;
+  const educationRows = useMemo(() => {
+    return [...education].sort(
+      (a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)
+    );
+  }, [education]);
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-10">
@@ -114,58 +148,101 @@ export default function Experience() {
         <h1 className="text-3xl font-bold tracking-tight text-[var(--text)]">
           {t("experiencePage.title")}
         </h1>
-        <p className="mt-2 text-[var(--muted)]">
-          {t("experiencePage.subtitle")}
-        </p>
       </header>
 
-      <div className="mt-8 grid gap-6 md:grid-cols-3">
-        {/* Experience timeline */}
-        <section className="md:col-span-2">
-          <h2 className="text-xl font-semibold text-[var(--text)]">
-            {t("experiencePage.sections.experience")}
-          </h2>
+      {err && (
+        <div className="mt-6 rounded-xl border border-red-300 bg-red-50 p-3 text-sm text-red-700">
+          {err}
+        </div>
+      )}
 
-          {/* Optional tiny loading hint */}
-          {!loaded ? (
-            <p className="mt-3 text-sm text-[var(--muted)]">...</p>
-          ) : null}
+      {loading ? (
+        <p className="mt-6 text-sm text-[var(--muted)]">Loading…</p>
+      ) : (
+        <div className="mt-8 space-y-10">
+          {/* =========================
+              SKILLS (grouped by category)
+             ========================= */}
+          <section>
+            <SectionTitle>Skills</SectionTitle>
+            <p className="mt-2 text-sm text-[var(--muted)]">
+              A quick overview of tools and technologies I use.
+            </p>
 
-          <div className="relative mt-4 md:pl-6">
-            <div className="absolute left-0 top-0 hidden h-full w-px bg-[var(--border)] md:block" />
-            <ul className="space-y-4">
+            <div className="mt-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm">
+              <div className="space-y-4">
+                {Object.entries(skillsByCategory)
+                  .sort(([a], [b]) => a.localeCompare(b))
+                  .map(([cat, items]) => (
+                    <div
+                      key={cat}
+                      className="flex flex-wrap items-center gap-2"
+                    >
+                      <CategoryPill>{cat}</CategoryPill>
+
+                      {items.map((s) => (
+                        <Pill key={s.id}>{s.name}</Pill>
+                      ))}
+                    </div>
+                  ))}
+              </div>
+            </div>
+          </section>
+
+          {/* =========================
+              EDUCATION (full width rows)
+             ========================= */}
+          <section>
+            <SectionTitle>Education</SectionTitle>
+
+            <div className="mt-4 space-y-4">
+              {educationRows.map((ed) => (
+                <article
+                  key={ed.id}
+                  className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm hover:bg-[var(--surface-2)] transition-colors"
+                >
+                  <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                    <div className="min-w-0">
+                      <p className="text-lg font-semibold text-[var(--text)]">
+                        {ed.program}
+                      </p>
+                      <p className="mt-1 text-[var(--muted)]">
+                        {ed.school} • {ed.level}
+                      </p>
+                    </div>
+
+                    <div className="shrink-0">
+                      <span className="rounded-full border border-[var(--border)] bg-[var(--bg)] px-3 py-1 text-xs text-[var(--muted)]">
+                        {formatEducationStatus(ed)}
+                      </span>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          {/* =========================
+              EXPERIENCE (last)
+             ========================= */}
+          <section>
+            <SectionTitle>Experience</SectionTitle>
+
+            <ul className="mt-4 space-y-4">
               {experience.map((item) => (
-                <TimelineCard key={`${item.org}-${item.title}`} item={item} />
+                <ExperienceRow
+                  key={item.id}
+                  item={item}
+                  open={openId === item.id}
+                  onToggle={() =>
+                    setOpenId((cur) => (cur === item.id ? null : item.id))
+                  }
+                />
               ))}
             </ul>
-          </div>
-        </section>
-
-        {/* Education summary */}
-        <aside className="md:col-span-1">
-          <h2 className="text-xl font-semibold text-[var(--text)]">
-            {t("experiencePage.sections.education")}
-          </h2>
-
-          <div className="mt-4 space-y-4">
-            {educationItems.map((ed) => (
-              <div
-                key={`${ed.school}-${ed.program}`}
-                className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm"
-              >
-                <p className="text-sm font-semibold text-[var(--text)]">
-                  {ed.program}
-                </p>
-                <p className="mt-1 text-[var(--muted)]">{ed.school}</p>
-
-                <div className="mt-4 inline-flex rounded-full border border-[var(--border)] bg-[var(--bg)] px-3 py-1 text-xs text-[var(--muted)]">
-                  {ed.dates}
-                </div>
-              </div>
-            ))}
-          </div>
-        </aside>
-      </div>
+          </section>
+        </div>
+      )}
     </main>
   );
 }
