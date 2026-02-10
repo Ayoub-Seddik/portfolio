@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { Skill } from "../../types/Skill";
-import SkillBar from "../../components/SkillBar";
-import { skillsMock } from "../../mock/skills";
+import type { Skill } from "../types/Skill";
+import SkillBar from "../components/SkillBar";
+import { skillsMock } from "../mock/skills";
 
 export default function AdminSkills() {
   const { t } = useTranslation();

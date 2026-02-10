@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:portfolio;DB_CLOSE_DELAY=-1
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+
+  sql:
+    init:
+      mode: always
+      platform: h2
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    defer-datasource-initialization: true
+
+  h2:
+    console:
+      enabled: true
+
+app:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}

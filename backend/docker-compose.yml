@@ -1,0 +1,19 @@
+services:
+  portfolio-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: portfolio-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - ADMIN_USERNAME=${ADMIN_USERNAME}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/projects"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s

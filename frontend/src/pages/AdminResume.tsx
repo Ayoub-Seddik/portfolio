@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { deleteResume, getResume, saveResume } from "../../data/resumeStore";
+import { deleteResume, getResume, saveResume } from "../data/resumeStore";
 
 type Lang = "en" | "fr";
 

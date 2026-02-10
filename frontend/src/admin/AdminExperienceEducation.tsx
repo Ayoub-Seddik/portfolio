@@ -7,7 +7,7 @@ import {
   type EducationItem,
   type ExperienceItem,
   type Lang,
-} from "../../data/experienceStore";
+} from "../data/experienceStore";
 
 function Input({ value, onChange, placeholder }: any) {
   return (
