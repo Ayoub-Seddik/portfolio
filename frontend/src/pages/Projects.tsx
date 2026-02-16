@@ -12,34 +12,51 @@ function Pill({ children }: { children: React.ReactNode }) {
 }
 
 export default function Projects() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language; // track current language
 
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // (For the new UI) local search box value
+  // local search box value
   const [query, setQuery] = useState("");
 
-  // Debounce search so it doesn’t call API every keystroke
+  // Debounce search AND refetch when language changes
   useEffect(() => {
+    let cancelled = false;
+
     const handle = setTimeout(async () => {
       try {
         setLoading(true);
         setError(null);
+
         const data = await fetchProjects(query);
-        setProjects(data);
+
+        if (!cancelled) {
+          setProjects(data);
+        }
       } catch (e: any) {
-        setError(e?.message ?? "Failed to load projects");
+        if (!cancelled) {
+          setError(e?.message ?? "Failed to load projects");
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     }, 300);
 
-    return () => clearTimeout(handle);
-  }, [query]);
+    return () => {
+      cancelled = true;
+      clearTimeout(handle);
+    };
+  }, [query, lang]); // ✅ key change: refetch when language changes
 
-  const countText = useMemo(() => `${projects.length} projects`, [projects.length]);
+  const countText = useMemo(
+    () => `${projects.length} projects`,
+    [projects.length]
+  );
 
   return (
     <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10">
@@ -50,22 +67,19 @@ export default function Projects() {
         <p className="text-[var(--muted)]">{t("projects.subtitle")}</p>
       </header>
 
-      {/* Search bar (matches your target UI direction) */}
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search projects..."
+            placeholder={t("projects.searchPlaceholder", "Search projects...")}
             className="w-full sm:w-80 rounded-xl border border-[var(--border)] bg-[var(--bg)] px-4 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--red)]"
           />
           <Pill>{countText}</Pill>
         </div>
       </div>
 
-      {loading && (
-        <p className="mt-6 text-[var(--muted)]">Loading projects…</p>
-      )}
+      {loading && <p className="mt-6 text-[var(--muted)]">Loading projects…</p>}
 
       {error && (
         <div className="mt-6 rounded-xl border border-red-300 bg-red-50 p-4 text-sm text-red-700">
@@ -89,7 +103,6 @@ export default function Projects() {
           </li>
         ))}
       </ul>
-
     </main>
   );
 }

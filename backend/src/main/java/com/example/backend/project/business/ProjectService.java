@@ -1,6 +1,8 @@
 package com.example.backend.project.business;
 
 import com.example.backend.exception.DuplicateSlugException;
+import com.example.backend.i8n.TranslationService;
+import com.example.backend.i8n.RequestLangContext;
 import com.example.backend.project.data.Project;
 import com.example.backend.project.data.ProjectRepository;
 import com.example.backend.project.presentation.ProjectRequestDTO;
@@ -18,11 +20,12 @@ public class ProjectService {
 
     private final ProjectRepository repo;
 
-    public List<ProjectResponseDTO> getProjects(String q) {
-        List<Project> projects = (q == null || q.isBlank())
-                ? repo.findAllByOrderByCreatedAtDesc()
-                : repo.findByTitleContainingIgnoreCaseOrderByCreatedAtDesc(q.trim());
+    // ✅ add these
+    private final RequestLangContext langContext;
+    private final TranslationService translationService;
 
+    public List<ProjectResponseDTO> getProjects() {
+        List<Project> projects = repo.findAll();
         return projects.stream().map(this::toDto).toList();
     }
 
@@ -34,7 +37,6 @@ public class ProjectService {
 
     @Transactional
     public ProjectResponseDTO create(ProjectRequestDTO req) {
-
         if (repo.existsBySlug(req.slug())) {
             throw new DuplicateSlugException(req.slug());
         }
@@ -53,7 +55,6 @@ public class ProjectService {
 
     @Transactional
     public ProjectResponseDTO update(Long id, ProjectRequestDTO req) {
-
         Project existing = repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Project not found"));
 
@@ -73,7 +74,6 @@ public class ProjectService {
         return toDto(repo.save(existing));
     }
 
-
     @Transactional
     public void delete(Long id) {
         if (!repo.existsById(id)) {
@@ -83,11 +83,13 @@ public class ProjectService {
     }
 
     private ProjectResponseDTO toDto(Project p) {
+        String lang = langContext.getLang();
+
         return new ProjectResponseDTO(
                 p.getId(),
-                p.getTitle(),
-                p.getSlug(),
-                p.getDescription(),
+                translationService.tTechSafe(p.getTitle(), lang),
+                p.getSlug(), // slug should NOT change
+                translationService.tTechSafe(p.getDescription(), lang),
                 p.getImageUrl(),
                 p.getLiveUrl(),
                 p.getGithubUrl(),

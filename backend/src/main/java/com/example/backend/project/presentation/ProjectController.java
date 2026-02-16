@@ -13,10 +13,12 @@ public class ProjectController {
 
     private final ProjectService service;
 
-    // GET /api/projects?q=tracker
+    // GET /api/projects?lang=fr
     @GetMapping
-    public List<ProjectResponseDTO> list(@RequestParam(required = false) String q) {
-        return service.getProjects(q);
+    public List<ProjectResponseDTO> listProjects(
+            @RequestParam(defaultValue = "en") String lang
+    ) {
+        return service.getProjects();
     }
 
     // GET /api/projects/{slug}

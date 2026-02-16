@@ -1,3 +1,5 @@
+import api from "./apiClient";
+
 export type Project = {
   id: number;
   title: string;
@@ -9,20 +11,10 @@ export type Project = {
   createdAt?: string;
 };
 
-const BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
-
 export async function fetchProjects(q?: string): Promise<Project[]> {
-  const url = new URL("/api/projects", BASE_URL);
-  if (q && q.trim()) url.searchParams.set("q", q.trim());
-
-  const res = await fetch(url.toString(), {
-    headers: { "Content-Type": "application/json" },
+  const res = await api.get<Project[]>("/api/projects", {
+    params: q && q.trim() ? { q: q.trim() } : undefined,
   });
 
-  if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(`Failed to load projects (${res.status}): ${text}`);
-  }
-
-  return res.json();
+  return res.data;
 }

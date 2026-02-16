@@ -1,6 +1,8 @@
-package com.example.backend.project.presentation;
+package com.example.backend.admin;
 
 import com.example.backend.project.business.ProjectService;
+import com.example.backend.project.presentation.ProjectRequestDTO;
+import com.example.backend.project.presentation.ProjectResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
