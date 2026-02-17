@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 public class SecurityConfig {
@@ -31,25 +32,34 @@ public class SecurityConfig {
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, LangFilter langFilter) throws Exception {
+    SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            LangFilter langFilter,
+            CorsFilter corsFilter
+    ) throws Exception {
+
         http
-                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
                         .requestMatchers("/api/projects/**").permitAll()
                         .requestMatchers("/api/experiences/**").permitAll()
                         .requestMatchers("/api/educations/**").permitAll()
                         .requestMatchers("/api/skills/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/contact").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/testimonials/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/testimonials").permitAll()
+
+                        .requestMatchers("/api/testimonials/**").permitAll()
+
                         .requestMatchers("/h2-console/**", "/actuator/health").permitAll()
+
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()));
+
+        http.addFilterBefore(corsFilter, BasicAuthenticationFilter.class);
 
         // important: run after basic auth so ROLE_ADMIN is available
         http.addFilterAfter(langFilter, BasicAuthenticationFilter.class);
