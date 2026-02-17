@@ -27,6 +27,11 @@ const adminCards = [
     to: "/admin/resume",
   },
   {
+    title: "Contact Messages",
+    desc: "View and manage contact messages.",
+    to: "/admin/messages",
+  },
+  {
     title: "Testimonials",
     desc: "Approve or deny testimonials before they go live.",
     to: "/admin/testimonials",

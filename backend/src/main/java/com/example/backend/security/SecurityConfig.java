@@ -41,6 +41,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/experiences/**").permitAll()
                         .requestMatchers("/api/educations/**").permitAll()
                         .requestMatchers("/api/skills/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/contact").permitAll()
                         .requestMatchers("/h2-console/**", "/actuator/health").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()

@@ -99,3 +99,6 @@ VALUES
     ('Design', 'Photoshop', 1),
     ('Design', 'After Effects', 2),
     ('Design', 'Figma', 3);
+
+INSERT INTO contact_messages (full_name, contact_email, contact_number, reason, created_at, is_hidden)
+VALUES ('Test User', 'test@example.com', '5145551234', 'This is a seeded message for testing (20+ chars).', CURRENT_TIMESTAMP, false);
