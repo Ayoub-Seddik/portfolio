@@ -102,3 +102,9 @@ VALUES
 
 INSERT INTO contact_messages (full_name, contact_email, contact_number, reason, created_at, is_hidden)
 VALUES ('Test User', 'test@example.com', '5145551234', 'This is a seeded message for testing (20+ chars).', CURRENT_TIMESTAMP, false);
+
+
+INSERT INTO testimonials (name, company, relation, message, status, created_at, updated_at)
+VALUES
+    ('Jane Doe', 'Acme Inc.', 'Manager', 'Seddik is reliable, fast to ship, and communicates clearly. Great teammate to work with!', 'APPROVED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('John Smith', NULL, 'Classmate', 'Very strong leadership in our group project and always helped unblock others when we got stuck.', 'PENDING', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

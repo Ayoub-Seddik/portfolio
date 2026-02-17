@@ -1,12 +1,10 @@
 import { useTranslation } from "react-i18next";
-import SkillBar from "../components/SkillBar";
-import { skillsMock } from "../mock/skills";
 import profilePic from "../assets/profile.jpg";
+import TestimonialsSection from "../components/testimonials/testimonialsSection";
 
 export default function Home() {
   const { t } = useTranslation();
 
-  // These arrays contain ONLY translation keys (not visible text)
   const heroTagKeys = ["home.heroTags.react", "home.heroTags.spring", "home.heroTags.sql"] as const;
 
   const hobbyKeys = [
@@ -79,6 +77,8 @@ export default function Home() {
         </div>
       </section>
 
+      {/* TESTIMONIALS */}
+      <TestimonialsSection />
     </main>
   );
 }

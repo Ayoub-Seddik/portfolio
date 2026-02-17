@@ -229,10 +229,15 @@ export default function AdminExperience() {
                 .slice()
                 .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
                 .map((x) => (
-                  <button
+                  <div
                     key={x.id}
+                    role="button"
+                    tabIndex={0}
                     onClick={() => selectItem(x)}
-                    className={`w-full rounded-xl border px-3 py-3 text-left transition ${
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") selectItem(x);
+                    }}
+                    className={`w-full rounded-xl border px-3 py-3 text-left transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--red)] ${
                       selected?.id === x.id
                         ? "border-[var(--red)] bg-[var(--surface-2)]"
                         : "border-[var(--border)] bg-[var(--bg)] hover:border-[var(--red)]"
@@ -261,7 +266,7 @@ export default function AdminExperience() {
                         Delete
                       </button>
                     </div>
-                  </button>
+                  </div>
                 ))
             )}
           </div>

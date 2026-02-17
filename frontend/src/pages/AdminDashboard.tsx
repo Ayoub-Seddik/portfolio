@@ -35,8 +35,7 @@ const adminCards = [
     title: "Testimonials",
     desc: "Approve or deny testimonials before they go live.",
     to: "/admin/testimonials",
-    badge: "Coming soon",
-  },
+  }
 ] as const;
 
 export default function AdminDashboard() {
@@ -60,12 +59,6 @@ export default function AdminDashboard() {
               <h2 className="text-lg font-semibold text-[var(--text)] group-hover:text-[var(--red)] transition">
                 {c.title}
               </h2>
-
-              {"badge" in c && (
-                <span className="rounded-full border border-[var(--border)] bg-[var(--bg)] px-2 py-1 text-[10px] font-semibold text-[var(--muted)]">
-                  {c.badge}
-                </span>
-              )}
             </div>
 
             <p className="mt-2 text-sm text-[var(--muted)]">{c.desc}</p>

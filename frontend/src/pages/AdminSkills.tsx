@@ -39,7 +39,6 @@ export default function AdminSkills() {
     return form.category.trim() && form.name.trim() && form.sortOrder.trim();
   }, [form]);
 
-  // common categories (you can add more)
   const CATEGORIES = ["FrontEnd", "BackEnd", "Design", "Other"] as const;
 
   useEffect(() => {
@@ -100,7 +99,8 @@ export default function AdminSkills() {
       }
       await load();
     } catch (e: any) {
-      if (e?.status === 401 || e?.status === 403) setErr("Not authorized. Please log in again.");
+      if (e?.status === 401 || e?.status === 403)
+        setErr("Not authorized. Please log in again.");
       else setErr(e?.message ?? "Save failed.");
     }
   }
@@ -191,10 +191,15 @@ export default function AdminSkills() {
 
                     <div className="space-y-2">
                       {items.map((s) => (
-                        <button
+                        <div
                           key={s.id}
+                          role="button"
+                          tabIndex={0}
                           onClick={() => selectSkill(s)}
-                          className={`w-full rounded-xl border px-3 py-3 text-left transition ${
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") selectSkill(s);
+                          }}
+                          className={`w-full rounded-xl border px-3 py-3 text-left transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--red)] ${
                             selected?.id === s.id
                               ? "border-[var(--red)] bg-[var(--surface-2)]"
                               : "border-[var(--border)] bg-[var(--bg)] hover:border-[var(--red)]"
@@ -221,7 +226,7 @@ export default function AdminSkills() {
                               Delete
                             </button>
                           </div>
-                        </button>
+                        </div>
                       ))}
                     </div>
                   </div>
@@ -250,7 +255,9 @@ export default function AdminSkills() {
             <div className="grid gap-3 sm:grid-cols-2">
               <select
                 value={form.category}
-                onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, category: e.target.value }))
+                }
                 className="rounded-xl border border-[var(--border)] bg-[var(--bg)] px-4 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--red)]"
               >
                 {CATEGORIES.map((c) => (
@@ -262,7 +269,9 @@ export default function AdminSkills() {
 
               <input
                 value={form.sortOrder}
-                onChange={(e) => setForm((f) => ({ ...f, sortOrder: e.target.value }))}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, sortOrder: e.target.value }))
+                }
                 placeholder="Sort order (1, 2, 3...)"
                 inputMode="numeric"
                 className="rounded-xl border border-[var(--border)] bg-[var(--bg)] px-4 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--red)]"

@@ -15,6 +15,7 @@ import AdminProjects from "./pages/AdminProjects";
 import AdminExperience from "./pages/AdminExperience";
 import AdminEducation from "./pages/AdminEducation";
 import AdminMessages from "./pages/AdminMessages";
+import AdminTestimonials from "./pages/AdminTestimonials";
 
 import NotFound from "./pages/NotFound";
 
@@ -44,6 +45,7 @@ export default function App() {
           <Route path="projects" element={<AdminProjects />} />
           <Route path="educations" element={<AdminEducation />} />
           <Route path="messages" element={<AdminMessages />} />
+          <Route path="testimonials" element={<AdminTestimonials />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

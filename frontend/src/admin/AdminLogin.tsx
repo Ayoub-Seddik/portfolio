@@ -56,8 +56,8 @@ export default function AdminLogin({ onSuccess }: Props) {
   return (
     <main className="mx-auto max-w-lg px-4 sm:px-6 lg:px-8 py-12">
       <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm">
-        <h1 className="text-2xl font-bold text-[var(--text)]">Admin Login</h1>
-        <p className="mt-2 text-sm text-[var(--muted)]">
+        <h1 className="text-2xl text-center font-bold text-[var(--text)]">Login</h1>
+        <p className="mt-2 text-center text-sm text-[var(--muted)]">
           Sign in to manage your portfolio content.
         </p>
 

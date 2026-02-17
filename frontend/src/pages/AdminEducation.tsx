@@ -105,10 +105,8 @@ export default function AdminEducation() {
       sortOrder: Number(form.sortOrder.trim() || "1"),
     };
 
-    // if IN_PROGRESS, ignore completedYear if you want
     if (payload.status === "IN_PROGRESS") {
-      // you can keep an expected year here if you want;
-      // if you prefer null for in-progress, uncomment next line:
+      // optionally null out completedYear for in-progress
       // payload.completedYear = null;
     }
 
@@ -123,7 +121,8 @@ export default function AdminEducation() {
       }
       await load();
     } catch (e: any) {
-      if (e?.status === 401 || e?.status === 403) setErr("Not authorized. Please log in again.");
+      if (e?.status === 401 || e?.status === 403)
+        setErr("Not authorized. Please log in again.");
       else setErr(e?.message ?? "Save failed.");
     }
   }
@@ -192,10 +191,15 @@ export default function AdminEducation() {
                 .slice()
                 .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
                 .map((ed) => (
-                  <button
+                  <div
                     key={ed.id}
+                    role="button"
+                    tabIndex={0}
                     onClick={() => selectItem(ed)}
-                    className={`w-full rounded-xl border px-3 py-3 text-left transition ${
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") selectItem(ed);
+                    }}
+                    className={`w-full rounded-xl border px-3 py-3 text-left transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--red)] ${
                       selected?.id === ed.id
                         ? "border-[var(--red)] bg-[var(--surface-2)]"
                         : "border-[var(--border)] bg-[var(--bg)] hover:border-[var(--red)]"
@@ -222,7 +226,7 @@ export default function AdminEducation() {
                         Delete
                       </button>
                     </div>
-                  </button>
+                  </div>
                 ))
             )}
           </div>
@@ -270,7 +274,10 @@ export default function AdminEducation() {
               <select
                 value={form.status}
                 onChange={(e) =>
-                  setForm((f) => ({ ...f, status: e.target.value as EducationStatus }))
+                  setForm((f) => ({
+                    ...f,
+                    status: e.target.value as EducationStatus,
+                  }))
                 }
                 className="rounded-xl border border-[var(--border)] bg-[var(--bg)] px-4 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--red)]"
               >
@@ -280,8 +287,14 @@ export default function AdminEducation() {
 
               <input
                 value={form.completedYear}
-                onChange={(e) => setForm((f) => ({ ...f, completedYear: e.target.value }))}
-                placeholder={form.status === "COMPLETED" ? "Completed year (e.g., 2026)" : "Expected year (optional)"}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, completedYear: e.target.value }))
+                }
+                placeholder={
+                  form.status === "COMPLETED"
+                    ? "Completed year (e.g., 2026)"
+                    : "Expected year (optional)"
+                }
                 inputMode="numeric"
                 className="rounded-xl border border-[var(--border)] bg-[var(--bg)] px-4 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--red)]"
               />

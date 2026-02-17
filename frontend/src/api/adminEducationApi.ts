@@ -25,5 +25,6 @@ export const adminUpdateEducation = (id: number, payload: EducationPayload) =>
     body: JSON.stringify(payload),
   });
 
-export const adminDeleteEducation = (id: number) =>
-  adminRequest<void>(`/api/admin/educations/${id}`, { method: "DELETE" });
+export const adminDeleteEducation = async (id: number) => {
+  await adminRequest<unknown>(`/api/admin/educations/${id}`, { method: "DELETE" });
+};

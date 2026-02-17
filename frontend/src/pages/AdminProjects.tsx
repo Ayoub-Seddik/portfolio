@@ -183,10 +183,13 @@ export default function AdminProjects() {
               <p className="text-sm text-[var(--muted)]">No projects yet.</p>
             ) : (
               projects.map((p) => (
-                <button
+                <div
                   key={p.id}
+                  role="button"
+                  tabIndex={0}
                   onClick={() => selectProject(p)}
-                  className={`w-full rounded-xl border px-3 py-3 text-left transition ${
+                  onKeyDown={(e) => e.key === "Enter" && selectProject(p)}
+                  className={`w-full rounded-xl border px-3 py-3 text-left transition cursor-pointer ${
                     selected?.id === p.id
                       ? "border-[var(--red)] bg-[var(--surface-2)]"
                       : "border-[var(--border)] bg-[var(--bg)] hover:border-[var(--red)]"
@@ -194,7 +197,9 @@ export default function AdminProjects() {
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold text-[var(--text)]">{p.title}</p>
+                      <p className="truncate text-sm font-semibold text-[var(--text)]">
+                        {p.title}
+                      </p>
                       <p className="truncate text-xs text-[var(--muted)]">/{p.slug}</p>
                     </div>
 
@@ -209,10 +214,11 @@ export default function AdminProjects() {
                       Delete
                     </button>
                   </div>
-                </button>
+                </div>
               ))
             )}
           </div>
+
         </section>
 
         {/* Right: form */}
