@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import profilePic from "../assets/profile.jpg";
-import TestimonialsSection from "../components/testimonials/testimonialsSection";
+import TestimonialsSection from "../components/testimonials/TestimonialsSection";
 
 export default function Home() {
   const { t } = useTranslation();
