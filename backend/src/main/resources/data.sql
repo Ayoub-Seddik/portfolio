@@ -18,33 +18,6 @@ VALUES
         NULL,
         NULL,
         CURRENT_TIMESTAMP
-    ),
-    (
-        'Green CTG',
-        'green-ctg1',
-        'An app to help people get an overview of how they can make the city beautiful.',
-        'https://images.unsplash.com/photo-1518779578993-ec3579fee39f',
-        NULL,
-        'https://github.com/...',
-        CURRENT_TIMESTAMP
-    ),
-    (
-        'Green CTG',
-        'green-ctg2',
-        'An app to help people get an overview of how they can make the city beautiful.',
-        'https://images.unsplash.com/photo-1518779578993-ec3579fee39f',
-        NULL,
-        NULL,
-        CURRENT_TIMESTAMP
-    ),
-    (
-        'Green CTG',
-        'green-ctg3',
-        'An app to help people get an overview of how they can make the city beautiful.',
-        'https://images.unsplash.com/photo-1518779578993-ec3579fee39f',
-        NULL,
-        NULL,
-        CURRENT_TIMESTAMP
     );
 
 INSERT INTO experience (company, position, start_year, end_year, is_present, summary, sort_order)
