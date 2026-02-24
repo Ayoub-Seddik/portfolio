@@ -83,7 +83,7 @@ function ExperienceRow({
           </button>
 
           <span className="rounded-full border border-[var(--border)] bg-[var(--bg)] px-3 py-1 text-xs text-[var(--muted)]">
-            {formatExperienceDates(item)}
+            {formatExperienceDates(item, t)}
           </span>
         </div>
       </div>
@@ -144,8 +144,6 @@ export default function ExperiencePage() {
               program: await translateCached(x.program, "fr"),
               school: await translateCached(x.school, "fr"),
               level: await translateCached(x.level, "fr"),
-              // If your "status" is a field used by formatEducationStatus, translate it too:
-              // status: await translateCached((x as any).status, "fr"),
             }))
           );
 
@@ -260,7 +258,7 @@ export default function ExperiencePage() {
 
                     <div className="shrink-0">
                       <span className="rounded-full border border-[var(--border)] bg-[var(--bg)] px-3 py-1 text-xs text-[var(--muted)]">
-                        {formatEducationStatus(ed)}
+                        {formatEducationStatus(ed, t)}
                       </span>
                     </div>
                   </div>

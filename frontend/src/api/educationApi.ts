@@ -7,6 +7,7 @@ export type Education = {
   program: string;
   status: EducationStatus;
   completedYear: number | null;
+  expectedYear: number | null;
   sortOrder: number;
 };
 
@@ -18,9 +19,21 @@ export async function listEducation(): Promise<Education[]> {
   return res.json();
 }
 
-export function formatEducationStatus(ed: Education) {
-  if (ed.status === "COMPLETED") {
-    return ed.completedYear ? `Completed • ${ed.completedYear}` : "Completed";
-  }
-  return ed.completedYear ? `In progress • ${ed.completedYear}` : "In progress";
+
+import type { TFunction } from "i18next";
+
+export function formatEducationStatus(ed: Education, t?: TFunction) {
+  // adjust fields to match your model:
+  // Example: ed.status could be "IN_PROGRESS" | "COMPLETED"
+  const status = (ed.status ?? "").toUpperCase();
+  const year = ed.completedYear ?? ed.expectedYear ?? "";
+
+  const inProgress = t ? t("common.inProgress") : "In progress";
+  const completed = t ? t("common.completed") : "Completed";
+
+  if (status === "IN_PROGRESS") return year ? `${inProgress} • ${year}` : inProgress;
+  if (status === "COMPLETED") return year ? `${completed} • ${year}` : completed;
+
+  // fallback (if you already store a string)
+  return ed.status ?? "";
 }

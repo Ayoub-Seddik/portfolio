@@ -121,6 +121,14 @@
     "buttons": {
       "viewResponsibilities": "Voir les responsabilités",
       "hideResponsibilities": "Masquer les responsabilités"
+    },
+    "dates": {
+      "present": "Présent"
+    },
+    "educationStatus": {
+      "inProgress": "En cours",
+      "completed": "Terminé",
+      "expected": "Attendu"
     }
   },
   "resumePage": {
@@ -211,7 +219,11 @@
         "message": "Écrivez votre témoignage ici..."
       },
       "submit": "Envoyer",
-      "submitting": "Envoi..."
+      "submitting": "Envoi...",
+      "buttons": {
+        "close": "Fermer",
+        "cancel": "Annuler"
+      }
     },
     "validation": {
       "nameRequired": "Le nom est requis.",

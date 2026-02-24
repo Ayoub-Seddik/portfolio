@@ -9,9 +9,11 @@
     "prev": "Previous",
     "next": "Next",
     "close": "Close",
-    "cancel": "Cancel",
     "loading": "Loading…",
-    "loadFailed": "Failed to load page data"
+    "loadFailed": "Failed to load page data",
+    "present": "Present",
+    "inProgress": "In progress",
+    "completed": "Completed"
 
   },
   "notFound": {

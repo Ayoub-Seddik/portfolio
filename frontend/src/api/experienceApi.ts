@@ -1,3 +1,5 @@
+import type { TFunction } from "i18next";
+
 export type Experience = {
   id: number;
   company: string;
@@ -17,8 +19,18 @@ export async function listExperience(): Promise<Experience[]> {
   return res.json();
 }
 
-export function formatExperienceDates(e: Experience) {
-  // You can later add months; for now years:
-  const end = e.isPresent ? "Present" : (e.endYear ?? "");
-  return `${e.startYear} — ${end}`;
+export function formatExperienceDates(
+  exp: Experience,
+  t?: TFunction
+) {
+  // adjust these fields to match your model
+  const start = exp.startYear; // or exp.startDate
+  const end = exp.endYear;     // or exp.endDate (nullable)
+
+  const present = t ? t("common.present") : "Present";
+
+  const left = start ?? "";
+  const right = end ? end : present;
+
+  return `${left} — ${right}`;
 }

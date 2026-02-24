@@ -10,7 +10,10 @@
     "next": "Suivant",
     "close": "Fermer",
     "loading": "Chargement...",
-    "loadFailed": "Échec du chargement des données de la page"
+    "loadFailed": "Échec du chargement des données de la page",
+    "present": "Présent",
+    "inProgress": "En cours",
+    "completed": "Terminé"
   },
   "notFound": {
     "title": "404",
