@@ -31,11 +31,16 @@ public class SecurityConfig {
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, LangFilter langFilter) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                            LangFilter langFilter,
+                                            BruteForceProtectionService protection) throws Exception {
+
+        var entryPoint = new AdminAuthEntryPoint(protection);
 
         http
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(entryPoint))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
@@ -45,7 +50,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/skills/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/translate/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/contact").permitAll()
-
                         .requestMatchers("/api/testimonials/**").permitAll()
 
                         .requestMatchers("/h2-console/**", "/actuator/health").permitAll()
@@ -56,8 +60,17 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()));
 
-        // important: run after basic auth so ROLE_ADMIN is available
+        // (2) Rate limit admin endpoints (before auth work is done)
+        http.addFilterBefore(new AdminRateLimitFilter(), BasicAuthenticationFilter.class);
+
+        // (3) Lockout + delay (before auth)
+        http.addFilterBefore(new AdminBruteForceFilter(protection), BasicAuthenticationFilter.class);
+
+        // Keep your language filter after basic auth
         http.addFilterAfter(langFilter, BasicAuthenticationFilter.class);
+
+        // Clear failures after a successful ADMIN request
+        http.addFilterAfter(new AdminAuthSuccessResetFilter(protection), BasicAuthenticationFilter.class);
 
         return http.build();
     }
