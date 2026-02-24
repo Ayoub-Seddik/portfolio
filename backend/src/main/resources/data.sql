@@ -5,18 +5,28 @@ VALUES
         'DM Creations',
         'dm-creations',
         'An application to track all your data from one place. I developed the website and the mobile app.',
-        'https://res.cloudinary.com/dnqxtaoyo/image/upload/v1770681459/dmcreations_mswn7n.png',
+        'https://res.cloudinary.com/dnqxtaoyo/image/upload/v1771359314/Screenshot_2026-02-17_at_3.15.10_PM_daamkb.png',
         'https://www.dmcreations.ca',
         NULL,
         CURRENT_TIMESTAMP
     ),
     (
-        'Green CTG',
-        'green-ctg',
-        'An app to help people get an overview of how they can make the city beautiful.',
-        'https://images.unsplash.com/photo-1518779578993-ec3579fee39f',
+        'Champlain Pet Clinic',
+        'champlain-pet-clinic',
+        'Built a full-stack microservices web application for customers and employees to manage pets, appointments, orders, and inventory.
+    Contributed as a member of the Product Team',
+        'https://res.cloudinary.com/dnqxtaoyo/image/upload/v1771359508/Screenshot_2026-02-17_at_3.18.23_PM_a97t6u.png',
         NULL,
+        'https://github.com/cgerard321/champlain_petclinic',
+        CURRENT_TIMESTAMP
+    ),
+    (
+        'IOS News App',
+        'ios-news-app',
+        'An iOS news application that integrates with a third-party REST API to fetch and display real-time headlines. The app securely uses API keys for authenticated requests, delivering up-to-date articles with a clean, responsive user interface and optimized network handling.',
+        'https://res.cloudinary.com/dnqxtaoyo/image/upload/v1771359723/11a645a5-2e0f-41f3-97b6-ec85f737ac03.png',
         NULL,
+        'https://github.com/Ayoub-Seddik/NewsAPI',
         CURRENT_TIMESTAMP
     );
 

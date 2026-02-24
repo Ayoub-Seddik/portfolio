@@ -2,6 +2,12 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { fetchProjects, type Project } from "../api/projectsApi";
 import ProjectCard from "../components/ProjectCard";
+import { translateCached } from "../utils/translateCached";
+
+type ProjectView = Project & {
+  titleView: string;
+  descriptionView: string;
+};
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
@@ -13,16 +19,20 @@ function Pill({ children }: { children: React.ReactNode }) {
 
 export default function Projects() {
   const { t, i18n } = useTranslation();
-  const lang = i18n.language; // track current language
+  const isFr = (i18n.resolvedLanguage ?? i18n.language ?? "en")
+    .toLowerCase()
+    .startsWith("fr");
 
   const [projects, setProjects] = useState<Project[]>([]);
+  const [view, setView] = useState<ProjectView[]>([]);
+
   const [loading, setLoading] = useState(true);
+  const [translating, setTranslating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // local search box value
   const [query, setQuery] = useState("");
 
-  // Debounce search AND refetch when language changes
+  // Fetch projects (debounced search). NO lang param.
   useEffect(() => {
     let cancelled = false;
 
@@ -32,18 +42,11 @@ export default function Projects() {
         setError(null);
 
         const data = await fetchProjects(query);
-
-        if (!cancelled) {
-          setProjects(data);
-        }
+        if (!cancelled) setProjects(data);
       } catch (e: any) {
-        if (!cancelled) {
-          setError(e?.message ?? "Failed to load projects");
-        }
+        if (!cancelled) setError(e?.message ?? "Failed to load projects");
       } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
+        if (!cancelled) setLoading(false);
       }
     }, 300);
 
@@ -51,12 +54,48 @@ export default function Projects() {
       cancelled = true;
       clearTimeout(handle);
     };
-  }, [query, lang]); // ✅ key change: refetch when language changes
+  }, [query]);
 
-  const countText = useMemo(
-    () => `${projects.length} projects`,
-    [projects.length]
-  );
+  // Build view (translate when FR)
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      if (!isFr) {
+        const v: ProjectView[] = projects.map((p) => ({
+          ...p,
+          titleView: p.title,
+          descriptionView: p.description,
+        }));
+        if (!cancelled) setView(v);
+        return;
+      }
+
+      try {
+        setTranslating(true);
+
+        const v: ProjectView[] = await Promise.all(
+          projects.map(async (p) => {
+            const [titleView, descriptionView] = await Promise.all([
+              translateCached(p.title, "fr"),
+              translateCached(p.description, "fr"),
+            ]);
+            return { ...p, titleView, descriptionView };
+          })
+        );
+
+        if (!cancelled) setView(v);
+      } finally {
+        if (!cancelled) setTranslating(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [projects, isFr]);
+
+  const countText = useMemo(() => `${view.length} ${t("projects.title")}`, [view.length, t]);
 
   return (
     <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10">
@@ -65,21 +104,17 @@ export default function Projects() {
           {t("projects.title")}
         </h1>
         <p className="text-[var(--muted)]">{t("projects.subtitle")}</p>
+
+        {translating && (
+          <p className="text-xs text-[var(--muted)]">
+            {t("common.translating", "Translating…")}
+          </p>
+        )}
       </header>
 
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-2">
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={t("projects.searchPlaceholder", "Search projects...")}
-            className="w-full sm:w-80 rounded-xl border border-[var(--border)] bg-[var(--bg)] px-4 py-2 text-sm text-[var(--text)] outline-none focus:border-[var(--red)]"
-          />
-          <Pill>{countText}</Pill>
-        </div>
-      </div>
+    
 
-      {loading && <p className="mt-6 text-[var(--muted)]">Loading projects…</p>}
+      {loading && <p className="mt-6 text-[var(--muted)]">{t("common.loading", "Loading…")}</p>}
 
       {error && (
         <div className="mt-6 rounded-xl border border-red-300 bg-red-50 p-4 text-sm text-red-700">
@@ -97,9 +132,16 @@ export default function Projects() {
           sm:justify-items-stretch
         "
       >
-        {projects.map((project) => (
+        {view.map((project) => (
           <li key={project.id} className="w-full max-w-[360px] sm:max-w-none">
-            <ProjectCard project={project} />
+            {/* If your ProjectCard expects Project, pass mapped fields */}
+            <ProjectCard
+              project={{
+                ...project,
+                title: project.titleView,
+                description: project.descriptionView,
+              }}
+            />
           </li>
         ))}
       </ul>
