@@ -18,22 +18,10 @@
     },
     "hobbiesTitle": "Hobbies",
     "hobbies": {
-      "gym": {
-        "title": "Gym / Fitness",
-        "desc": "Staying active and disciplined."
-      },
-      "gaming": {
-        "title": "Gaming",
-        "desc": "Strategy and teamwork."
-      },
-      "cooking": {
-        "title": "Cooking",
-        "desc": "Learning new recipes."
-      },
-      "learning": {
-        "title": "Learning Tech",
-        "desc": "Always improving my skills."
-      }
+      "gym": { "title": "Gym / Fitness", "desc": "Staying active and disciplined." },
+      "gaming": { "title": "Gaming", "desc": "Strategy and teamwork." },
+      "cooking": { "title": "Cooking", "desc": "Learning new recipes." },
+      "learning": { "title": "Learning Tech", "desc": "Always improving my skills." }
     },
     "skillsTitle": "Skills"
   },
@@ -54,8 +42,22 @@
     "title": "Experience & Education",
     "subtitle": "A timeline of my professional and academic background.",
     "sections": {
-      "experience": "Experience",
-      "education": "Education"
+      "skills": "Skills",
+      "education": "Education",
+      "experience": "Experience"
+    },
+    "skillsSubtitle": "A quick overview of tools and technologies I use.",
+    "buttons": {
+      "viewResponsibilities": "View responsibilities",
+      "hideResponsibilities": "Hide responsibilities"
+    },
+    "dates": {
+      "present": "Present"
+    },
+    "educationStatus": {
+      "inProgress": "In progress",
+      "completed": "Completed",
+      "expected": "Expected"
     },
     "experience": [
       {
@@ -131,23 +133,87 @@
   "contact": {
     "title": "Contact",
     "subtitle": "Want to reach out? Send me a message and I’ll get back to you.",
-    "form": {
-      "name": "Your name",
-      "email": "Your email",
-      "message": "Your message",
-      "send": "Send message"
+    "labels": {
+      "fullName": "Full Name",
+      "email": "Contact Email",
+      "phone": "Contact Number",
+      "reason": "Reason for contact"
+    },
+    "placeholders": {
+      "fullName": "Full Name",
+      "email": "email@example.com",
+      "phone": "(514) 555-1234",
+      "reason": "Minimum 20 characters, max 500"
+    },
+    "buttons": {
+      "send": "Send",
+      "sending": "Sending..."
+    },
+    "phoneCounter": "{{current}}/{{total}} digits",
+    "reasonCounter": "{{current}}/{{total}}",
+    "errors": {
+      "sendFailed": "Send failed"
+    },
+    "validation": {
+      "fullNameRequired": "Full name is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email (ex: name@email.com)",
+      "phoneRequired": "Phone is required",
+      "phoneInvalid": "Phone number must be exactly 10 digits",
+      "reasonRequired": "Reason is required",
+      "reasonTooShort": "Reason must be at least {{min}} characters",
+      "reasonTooLong": "Reason must be at most {{max}} characters"
+    },
+    "success": {
+      "title": "Message received",
+      "message": "Thanks — I’ll get back to you soon.",
+      "back": "Back"
+    }
+  },
+
+  "testimonials": {
+    "title": "Testimonials",
+    "subtitle": "Feedback from people I’ve worked with.",
+    "loading": "Loading testimonials...",
+    "empty": "No testimonials yet. Be the first to leave one!",
+    "add": "Add a testimonial",
+    "counter": "{{current}} / {{total}}",
+    "sentForReview": "It has been sent for review.",
+    "errors": {
+      "loadFailed": "Failed to load testimonials.",
+      "submitFailed": "Failed to submit testimonial."
+    },
+    "confirm": {
+      "title": "Thank you!",
+      "sentForReview": "It has been sent for review."
+    },
+    "modal": {
+      "title": "Add a testimonial",
+      "pendingNote": "Your testimonial will be submitted as {{status}} until approved.",
+      "statusPending": "Pending",
+      "nameLabel": "Name *",
+      "companyLabel": "Company (optional)",
+      "relationLabel": "Relation to me *",
+      "messageLabel": "Testimonial *",
+      "messageHint": "Min {{min}}, max {{max}} characters",
+      "placeholders": {
+        "name": "Jane Doe",
+        "company": "Acme Inc.",
+        "relation": "Manager / Coworker / Client / Professor...",
+        "message": "Write your testimonial here..."
+      },
+      "buttons": {
+        "close": "Close",
+        "cancel": "Cancel"
+      },
+      "submit": "Submit",
+      "submitting": "Submitting..."
     },
     "validation": {
       "nameRequired": "Name is required.",
-      "emailRequired": "Email is required.",
-      "emailInvalid": "Please enter a valid email.",
-      "messageRequired": "Message is required.",
-      "messageTooShort": "Message must be at least 10 characters."
-    },
-    "success": {
-      "title": "Message sent!",
-      "message": "Thanks for reaching out. I’ll reply as soon as I can.",
-      "newMessage": "Send another message"
+      "relationRequired": "Relation to me is required.",
+      "minChars": "Testimonial must be at least {{min}} characters.",
+      "maxChars": "Testimonial must be at most {{max}} characters."
     }
   }
 }

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { createTestimonial } from "../../api/testimonialsApi";
 
 type Props = {
@@ -13,6 +14,8 @@ function clampMessage(msg: string) {
 }
 
 export default function AddTestimonialModal({ open, onClose, onCreated }: Props) {
+  const { t } = useTranslation();
+
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
   const [relation, setRelation] = useState("");
@@ -20,6 +23,9 @@ export default function AddTestimonialModal({ open, onClose, onCreated }: Props)
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // ✅ show confirmation after submit
+  const [submitted, setSubmitted] = useState(false);
 
   // Reset when opening
   useEffect(() => {
@@ -30,20 +36,21 @@ export default function AddTestimonialModal({ open, onClose, onCreated }: Props)
     setMessage("");
     setSaving(false);
     setError(null);
+    setSubmitted(false);
   }, [open]);
 
   const msgLen = message.trim().length;
 
   const validation = useMemo(() => {
     const errs: string[] = [];
-    if (!name.trim()) errs.push("Name is required.");
-    if (!relation.trim()) errs.push("Relation to me is required.");
-    if (msgLen < 20) errs.push("Testimonial must be at least 20 characters.");
-    if (msgLen > 500) errs.push("Testimonial must be at most 500 characters.");
+    if (!name.trim()) errs.push(t("testimonials.validation.nameRequired"));
+    if (!relation.trim()) errs.push(t("testimonials.validation.relationRequired"));
+    if (msgLen < 20) errs.push(t("testimonials.validation.minChars", { min: 20 }));
+    if (msgLen > 500) errs.push(t("testimonials.validation.maxChars", { max: 500 }));
     return errs;
-  }, [name, relation, msgLen]);
+  }, [name, relation, msgLen, t]);
 
-  const canSubmit = open && !saving && validation.length === 0;
+  const canSubmit = open && !saving && !submitted && validation.length === 0;
 
   async function onSubmit() {
     if (!canSubmit) return;
@@ -58,10 +65,14 @@ export default function AddTestimonialModal({ open, onClose, onCreated }: Props)
         message: message.trim(),
       });
 
+      // ✅ show confirmation view
+      setSubmitted(true);
+      setSaving(false);
+
+      // optional callback (ex: to show toast or refresh lists)
       onCreated?.();
-      onClose();
     } catch (e: any) {
-      setError(e?.message ?? "Failed to submit testimonial.");
+      setError(e?.message ?? t("testimonials.errors.submitFailed"));
       setSaving(false);
     }
   }
@@ -92,11 +103,8 @@ export default function AddTestimonialModal({ open, onClose, onCreated }: Props)
     <div
       className="
         fixed inset-0 z-50
-        flex
-        items-start sm:items-center
-        justify-center
-        p-4
-        overflow-y-auto
+        flex items-start sm:items-center justify-center
+        p-4 overflow-y-auto
       "
       role="dialog"
       aria-modal="true"
@@ -104,7 +112,7 @@ export default function AddTestimonialModal({ open, onClose, onCreated }: Props)
       {/* Backdrop */}
       <button
         className="fixed inset-0 bg-black/50"
-        aria-label="Close modal"
+        aria-label={t("common.close")}
         onClick={onClose}
       />
 
@@ -123,107 +131,121 @@ export default function AddTestimonialModal({ open, onClose, onCreated }: Props)
         <div className="flex items-start justify-between gap-4">
           <div>
             <h3 className="text-lg font-semibold text-[var(--text)]">
-              Add a testimonial
+              {submitted ? t("testimonials.confirm.title") : t("testimonials.modal.title")}
             </h3>
-            <p className="mt-1 text-sm text-[var(--muted)]">
-              Your testimonial will be submitted as{" "}
-              <span className="font-semibold">Pending</span> until approved.
-            </p>
+
+            {!submitted && (
+              <p className="mt-1 text-sm text-[var(--muted)]">
+                {t("testimonials.modal.pendingNote", {
+                  status: t("testimonials.modal.statusPending"),
+                })}
+              </p>
+            )}
           </div>
+
           <button
             className="rounded-xl border border-[var(--border)] bg-[var(--bg)] px-3 py-1 text-sm text-[var(--text)] hover:bg-[var(--surface-2)]"
             onClick={onClose}
           >
-            Close
+            {t("common.close")}
           </button>
         </div>
 
-        <div className="mt-5 grid gap-4">
-          <label className="grid gap-1">
-            <span className="text-sm font-medium text-[var(--text)]">Name *</span>
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-xl border border-[var(--border)] bg-[var(--bg)] px-3 py-2 text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-[var(--red)]"
-              placeholder="Jane Doe"
-            />
-          </label>
-
-          <label className="grid gap-1">
-            <span className="text-sm font-medium text-[var(--text)]">
-              Company (optional)
-            </span>
-            <input
-              value={company}
-              onChange={(e) => setCompany(e.target.value)}
-              className="w-full rounded-xl border border-[var(--border)] bg-[var(--bg)] px-3 py-2 text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-[var(--red)]"
-              placeholder="Acme Inc."
-            />
-          </label>
-
-          <label className="grid gap-1">
-            <span className="text-sm font-medium text-[var(--text)]">
-              Relation to me *
-            </span>
-            <input
-              value={relation}
-              onChange={(e) => setRelation(e.target.value)}
-              className="w-full rounded-xl border border-[var(--border)] bg-[var(--bg)] px-3 py-2 text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-[var(--red)]"
-              placeholder="Manager / Coworker / Client / Professor..."
-            />
-          </label>
-
-          <label className="grid gap-1">
-            <span className="text-sm font-medium text-[var(--text)]">
-              Testimonial *
-            </span>
-            <textarea
-              value={message}
-              onChange={(e) => setMessage(clampMessage(e.target.value))}
-              className="min-h-[120px] w-full rounded-xl border border-[var(--border)] bg-[var(--bg)] px-3 py-2 text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-[var(--red)]"
-              placeholder="Write your testimonial here..."
-            />
-            <div className="flex items-center justify-between text-xs text-[var(--muted)]">
-              <span>Min 20, max 500 characters</span>
-              <span className={msgLen > 500 || msgLen < 20 ? "text-[var(--red)]" : ""}>
-                {msgLen}/500
-              </span>
-            </div>
-          </label>
-
-          {validation.length > 0 && (
-            <div className="rounded-xl border border-[var(--border)] bg-[var(--bg)] p-3 text-sm text-[var(--muted)]">
-              <ul className="list-disc pl-5">
-                {validation.map((v) => (
-                  <li key={v}>{v}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {error && (
-            <div className="rounded-xl border border-[var(--border)] bg-[var(--bg)] p-3 text-sm text-[var(--red)]">
-              {error}
-            </div>
-          )}
-
-          <div className="flex justify-end gap-2 pt-2">
-            <button
-              className="rounded-xl border border-[var(--border)] bg-[var(--bg)] px-4 py-2 text-sm text-[var(--text)] hover:bg-[var(--surface-2)]"
-              onClick={onClose}
-              disabled={saving}
-            >
-              Cancel
-            </button>
-            <button
-              className="rounded-xl bg-[var(--red)] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
-              onClick={onSubmit}
-              disabled={!canSubmit}
-            >
-              {saving ? "Submitting..." : "Submit"}
-            </button>
+        {/* ✅ Confirmation screen */}
+        {submitted ? (
+          <div className="mt-5 rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-4 text-[var(--text)]">
+            {t("testimonials.confirm.sentForReview")}
           </div>
-        </div>
+        ) : (
+          <div className="mt-5 grid gap-4">
+            <label className="grid gap-1">
+              <span className="text-sm font-medium text-[var(--text)]">
+                {t("testimonials.modal.nameLabel")}
+              </span>
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full rounded-xl border border-[var(--border)] bg-[var(--bg)] px-3 py-2 text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-[var(--red)]"
+                placeholder={t("testimonials.modal.placeholders.name")}
+              />
+            </label>
+
+            <label className="grid gap-1">
+              <span className="text-sm font-medium text-[var(--text)]">
+                {t("testimonials.modal.companyLabel")}
+              </span>
+              <input
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+                className="w-full rounded-xl border border-[var(--border)] bg-[var(--bg)] px-3 py-2 text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-[var(--red)]"
+                placeholder={t("testimonials.modal.placeholders.company")}
+              />
+            </label>
+
+            <label className="grid gap-1">
+              <span className="text-sm font-medium text-[var(--text)]">
+                {t("testimonials.modal.relationLabel")}
+              </span>
+              <input
+                value={relation}
+                onChange={(e) => setRelation(e.target.value)}
+                className="w-full rounded-xl border border-[var(--border)] bg-[var(--bg)] px-3 py-2 text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-[var(--red)]"
+                placeholder={t("testimonials.modal.placeholders.relation")}
+              />
+            </label>
+
+            <label className="grid gap-1">
+              <span className="text-sm font-medium text-[var(--text)]">
+                {t("testimonials.modal.messageLabel")}
+              </span>
+              <textarea
+                value={message}
+                onChange={(e) => setMessage(clampMessage(e.target.value))}
+                className="min-h-[120px] w-full rounded-xl border border-[var(--border)] bg-[var(--bg)] px-3 py-2 text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-[var(--red)]"
+                placeholder={t("testimonials.modal.placeholders.message")}
+              />
+              <div className="flex items-center justify-between text-xs text-[var(--muted)]">
+                <span>{t("testimonials.modal.messageHint", { min: 20, max: 500 })}</span>
+                <span className={msgLen > 500 || msgLen < 20 ? "text-[var(--red)]" : ""}>
+                  {msgLen}/500
+                </span>
+              </div>
+            </label>
+
+            {validation.length > 0 && (
+              <div className="rounded-xl border border-[var(--border)] bg-[var(--bg)] p-3 text-sm text-[var(--muted)]">
+                <ul className="list-disc pl-5">
+                  {validation.map((v) => (
+                    <li key={v}>{v}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {error && (
+              <div className="rounded-xl border border-[var(--border)] bg-[var(--bg)] p-3 text-sm text-[var(--red)]">
+                {error}
+              </div>
+            )}
+
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                className="rounded-xl border border-[var(--border)] bg-[var(--bg)] px-4 py-2 text-sm text-[var(--text)] hover:bg-[var(--surface-2)]"
+                onClick={onClose}
+                disabled={saving}
+              >
+                {t("common.cancel")}
+              </button>
+              <button
+                className="rounded-xl bg-[var(--red)] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
+                onClick={onSubmit}
+                disabled={!canSubmit}
+              >
+                {saving ? t("testimonials.modal.submitting") : t("testimonials.modal.submit")}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

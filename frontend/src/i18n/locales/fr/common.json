@@ -5,7 +5,12 @@
     "update": "Mettre à jour",
     "cancel": "Annuler",
     "edit": "Modifier",
-    "delete": "Supprimer"
+    "delete": "Supprimer",
+    "prev": "Précédent",
+    "next": "Suivant",
+    "close": "Fermer",
+    "loading": "Chargement...",
+    "loadFailed": "Échec du chargement des données de la page"
   },
   "notFound": {
     "title": "404",

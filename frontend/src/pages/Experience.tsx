@@ -10,6 +10,8 @@ import { formatEducationStatus, listEducation } from "../api/educationApi";
 import type { Experience } from "../api/experienceApi";
 import { formatExperienceDates, listExperience } from "../api/experienceApi";
 
+import { translateCached } from "../utils/translateCached";
+
 function Pill({ children }: { children: React.ReactNode }) {
   return (
     <span className="rounded-full border border-[var(--border)] bg-[var(--bg)] px-3 py-1 text-xs text-[var(--muted)]">
@@ -32,6 +34,20 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
+function normalizeLang(lng: string): "en" | "fr" {
+  return lng?.toLowerCase().startsWith("fr") ? "fr" : "en";
+}
+
+function mapSkillCategory(cat: string, lang: "en" | "fr") {
+  const c = (cat || "Other").trim();
+  if (lang !== "fr") return c;
+
+  const lower = c.toLowerCase();
+  if (lower === "other") return "Autre";
+  // Frontend/Backend/Design often don't need translation; keep as-is.
+  return c;
+}
+
 function ExperienceRow({
   item,
   open,
@@ -41,6 +57,8 @@ function ExperienceRow({
   open: boolean;
   onToggle: () => void;
 }) {
+  const { t } = useTranslation();
+
   return (
     <li className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm hover:bg-[var(--surface-2)] transition-colors">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -59,7 +77,9 @@ function ExperienceRow({
             onClick={onToggle}
             className="rounded-xl bg-[var(--red)] px-3 py-2 text-sm font-semibold text-white hover:bg-[var(--red-dark)]"
           >
-            {open ? "Hide responsibilities" : "View responsibilities"}
+            {open
+              ? t("experiencePage.buttons.hideResponsibilities")
+              : t("experiencePage.buttons.viewResponsibilities")}
           </button>
 
           <span className="rounded-full border border-[var(--border)] bg-[var(--bg)] px-3 py-1 text-xs text-[var(--muted)]">
@@ -78,7 +98,8 @@ function ExperienceRow({
 }
 
 export default function ExperiencePage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = normalizeLang(i18n.language);
 
   const [skills, setSkills] = useState<Skill[]>([]);
   const [education, setEducation] = useState<Education[]>([]);
@@ -105,11 +126,39 @@ export default function ExperiencePage() {
 
         if (cancelled) return;
 
-        setSkills(sk);
-        setEducation(edu);
-        setExperience(exp);
+        // Only translate backend content when FR is active.
+        if (lang === "fr") {
+          const expFr = await Promise.all(
+            exp.map(async (x) => ({
+              ...x,
+              position: await translateCached(x.position, "fr"),
+              summary: await translateCached(x.summary, "fr"),
+              // company usually stays as-is (names), but you can translate if you want:
+              // company: await translateCached(x.company, "fr"),
+            }))
+          );
+
+          const eduFr = await Promise.all(
+            edu.map(async (x) => ({
+              ...x,
+              program: await translateCached(x.program, "fr"),
+              school: await translateCached(x.school, "fr"),
+              level: await translateCached(x.level, "fr"),
+              // If your "status" is a field used by formatEducationStatus, translate it too:
+              // status: await translateCached((x as any).status, "fr"),
+            }))
+          );
+
+          setSkills(sk);
+          setEducation(eduFr);
+          setExperience(expFr);
+        } else {
+          setSkills(sk);
+          setEducation(edu);
+          setExperience(exp);
+        }
       } catch (e: any) {
-        if (!cancelled) setErr(e?.message ?? "Failed to load page data");
+        if (!cancelled) setErr(e?.message ?? t("common.loadFailed"));
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -118,12 +167,13 @@ export default function ExperiencePage() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [lang, t]);
 
   const skillsByCategory = useMemo(() => {
     const grouped: Record<string, Skill[]> = {};
     for (const s of skills) {
-      const cat = (s.category || "Other").trim();
+      const rawCat = (s.category || "Other").trim();
+      const cat = mapSkillCategory(rawCat, lang);
       (grouped[cat] ||= []).push(s);
     }
     for (const cat of Object.keys(grouped)) {
@@ -134,7 +184,7 @@ export default function ExperiencePage() {
       );
     }
     return grouped;
-  }, [skills]);
+  }, [skills, lang]);
 
   const educationRows = useMemo(() => {
     return [...education].sort(
@@ -148,6 +198,7 @@ export default function ExperiencePage() {
         <h1 className="text-3xl font-bold tracking-tight text-[var(--text)]">
           {t("experiencePage.title")}
         </h1>
+        <p className="mt-2 text-[var(--muted)]">{t("experiencePage.subtitle")}</p>
       </header>
 
       {err && (
@@ -157,16 +208,14 @@ export default function ExperiencePage() {
       )}
 
       {loading ? (
-        <p className="mt-6 text-sm text-[var(--muted)]">Loading…</p>
+        <p className="mt-6 text-sm text-[var(--muted)]">{t("common.loading")}</p>
       ) : (
         <div className="mt-8 space-y-10">
-          {/* =========================
-              SKILLS (grouped by category)
-             ========================= */}
+          {/* SKILLS */}
           <section>
-            <SectionTitle>Skills</SectionTitle>
+            <SectionTitle>{t("experiencePage.sections.skills")}</SectionTitle>
             <p className="mt-2 text-sm text-[var(--muted)]">
-              A quick overview of tools and technologies I use.
+              {t("experiencePage.skillsSubtitle")}
             </p>
 
             <div className="mt-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm">
@@ -189,11 +238,9 @@ export default function ExperiencePage() {
             </div>
           </section>
 
-          {/* =========================
-              EDUCATION (full width rows)
-             ========================= */}
+          {/* EDUCATION */}
           <section>
-            <SectionTitle>Education</SectionTitle>
+            <SectionTitle>{t("experiencePage.sections.education")}</SectionTitle>
 
             <div className="mt-4 space-y-4">
               {educationRows.map((ed) => (
@@ -222,11 +269,9 @@ export default function ExperiencePage() {
             </div>
           </section>
 
-          {/* =========================
-              EXPERIENCE (last)
-             ========================= */}
+          {/* EXPERIENCE */}
           <section>
-            <SectionTitle>Experience</SectionTitle>
+            <SectionTitle>{t("experiencePage.sections.experience")}</SectionTitle>
 
             <ul className="mt-4 space-y-4">
               {experience.map((item) => (

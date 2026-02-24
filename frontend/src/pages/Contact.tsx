@@ -47,20 +47,20 @@ export default function Contact() {
   function validate(values: FormState): Errors {
     const e: Errors = {};
 
-    if (!values.fullName.trim()) e.fullName = "Full name is required";
+    if (!values.fullName.trim()) e.fullName = t("contact.validation.fullNameRequired");
 
-    if (!values.contactEmail.trim()) e.contactEmail = "Email is required";
+    if (!values.contactEmail.trim()) e.contactEmail = t("contact.validation.emailRequired");
     else if (!isValidEmail(values.contactEmail))
-      e.contactEmail = "Please enter a valid email (ex: name@email.com)";
+      e.contactEmail = t("contact.validation.emailInvalid");
 
-    if (!values.contactNumber.trim()) e.contactNumber = "Phone is required";
+    if (!values.contactNumber.trim()) e.contactNumber = t("contact.validation.phoneRequired");
     else if (values.contactNumber.length !== 10)
-      e.contactNumber = "Phone number must be exactly 10 digits";
+      e.contactNumber = t("contact.validation.phoneInvalid");
 
     const reasonLen = values.reason.trim().length;
-    if (!values.reason.trim()) e.reason = "Reason is required";
-    else if (reasonLen < 20) e.reason = "Reason must be at least 20 characters";
-    else if (reasonLen > 500) e.reason = "Reason must be at most 500 characters";
+    if (!values.reason.trim()) e.reason = t("contact.validation.reasonRequired");
+    else if (reasonLen < 20) e.reason = t("contact.validation.reasonTooShort", { min: 20 });
+    else if (reasonLen > 500) e.reason = t("contact.validation.reasonTooLong", { max: 500 });
 
     return e;
   }
@@ -77,7 +77,7 @@ export default function Contact() {
       await createContactMessage({
         fullName: form.fullName.trim(),
         contactEmail: form.contactEmail.trim(),
-        contactNumber: form.contactNumber, // digits only
+        contactNumber: form.contactNumber,
         reason: form.reason.trim(),
       });
 
@@ -85,7 +85,7 @@ export default function Contact() {
       setForm({ fullName: "", contactEmail: "", contactNumber: "", reason: "" });
       setErrors({});
     } catch (err: any) {
-      setErrors((p) => ({ ...p, reason: err?.message ?? "Send failed" }));
+      setErrors((p) => ({ ...p, reason: err?.message ?? t("contact.errors.sendFailed") }));
     } finally {
       setSubmitting(false);
     }
@@ -96,18 +96,16 @@ export default function Contact() {
       <main className="mx-auto max-w-3xl px-4 py-10">
         <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm">
           <h1 className="text-2xl font-bold text-[var(--text)]">
-            Message received
+            {t("contact.success.title")}
           </h1>
-          <p className="mt-2 text-[var(--muted)]">
-            Thanks — I’ll get back to you soon.
-          </p>
+          <p className="mt-2 text-[var(--muted)]">{t("contact.success.message")}</p>
 
           <button
             type="button"
             onClick={() => setSubmitted(false)}
             className="mt-6 rounded-xl border border-[var(--border)] bg-[var(--bg)] px-4 py-2 text-sm font-semibold text-[var(--text)] hover:bg-[var(--surface-2)]"
           >
-            Back
+            {t("contact.success.back")}
           </button>
         </section>
       </main>
@@ -128,19 +126,17 @@ export default function Contact() {
           {/* Full Name */}
           <div>
             <label className="text-sm font-medium text-[var(--muted)]">
-              Full Name
+              {t("contact.labels.fullName")}
             </label>
             <input
               value={form.fullName}
               onChange={(e) => {
                 const value = e.target.value;
                 setForm((p) => ({ ...p, fullName: value }));
-                if (errors.fullName) {
-                  setErrors((p) => ({ ...p, fullName: undefined }));
-                }
+                if (errors.fullName) setErrors((p) => ({ ...p, fullName: undefined }));
               }}
               className="mt-1 w-full rounded-xl border border-[var(--border)] bg-[var(--bg)] px-3 py-2 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--red)]"
-              placeholder="Full Name"
+              placeholder={t("contact.placeholders.fullName")}
             />
             {errors.fullName ? (
               <p className="mt-2 text-sm text-[var(--red)]">{errors.fullName}</p>
@@ -150,84 +146,74 @@ export default function Contact() {
           {/* Contact Email */}
           <div>
             <label className="text-sm font-medium text-[var(--muted)]">
-              Contact Email
+              {t("contact.labels.email")}
             </label>
             <input
               value={form.contactEmail}
               onChange={(e) => {
                 const value = e.target.value;
                 setForm((p) => ({ ...p, contactEmail: value }));
-                if (errors.contactEmail) {
-                  setErrors((p) => ({ ...p, contactEmail: undefined }));
-                }
+                if (errors.contactEmail) setErrors((p) => ({ ...p, contactEmail: undefined }));
               }}
               className="mt-1 w-full rounded-xl border border-[var(--border)] bg-[var(--bg)] px-3 py-2 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--red)]"
-              placeholder="email@example.com"
+              placeholder={t("contact.placeholders.email")}
               inputMode="email"
               autoComplete="email"
             />
             {errors.contactEmail ? (
-              <p className="mt-2 text-sm text-[var(--red)]">
-                {errors.contactEmail}
-              </p>
+              <p className="mt-2 text-sm text-[var(--red)]">{errors.contactEmail}</p>
             ) : null}
           </div>
 
-          {/* Contact Number (10 digits only) */}
+          {/* Contact Number */}
           <div>
             <label className="text-sm font-medium text-[var(--muted)]">
-              Contact Number
+              {t("contact.labels.phone")}
             </label>
             <input
-              value={formatPhone10(form.contactNumber)} // pretty display
+              value={formatPhone10(form.contactNumber)}
               onChange={(e) => {
                 const digits = onlyDigitsMax10(e.target.value);
                 setForm((p) => ({ ...p, contactNumber: digits }));
-
-                if (errors.contactNumber) {
-                  setErrors((p) => ({ ...p, contactNumber: undefined }));
-                }
+                if (errors.contactNumber) setErrors((p) => ({ ...p, contactNumber: undefined }));
               }}
               className="mt-1 w-full rounded-xl border border-[var(--border)] bg-[var(--bg)] px-3 py-2 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--red)]"
-              placeholder="(514) 555-1234"
+              placeholder={t("contact.placeholders.phone")}
               inputMode="numeric"
               autoComplete="tel"
             />
 
             <div className="mt-2 flex items-center justify-between text-xs text-[var(--muted)]">
               <span>{errors.contactNumber ? "" : " "}</span>
-              <span>{form.contactNumber.length}/10 digits</span>
+              <span>
+                {t("contact.phoneCounter", { current: form.contactNumber.length, total: 10 })}
+              </span>
             </div>
 
             {errors.contactNumber ? (
-              <p className="mt-2 text-sm text-[var(--red)]">
-                {errors.contactNumber}
-              </p>
+              <p className="mt-2 text-sm text-[var(--red)]">{errors.contactNumber}</p>
             ) : null}
           </div>
 
           {/* Reason */}
           <div>
             <label className="text-sm font-medium text-[var(--muted)]">
-              Reason for contact
+              {t("contact.labels.reason")}
             </label>
             <textarea
               value={form.reason}
               onChange={(e) => {
                 const value = e.target.value;
                 setForm((p) => ({ ...p, reason: value }));
-
-                if (errors.reason) {
-                  setErrors((p) => ({ ...p, reason: undefined }));
-                }
+                if (errors.reason) setErrors((p) => ({ ...p, reason: undefined }));
               }}
               className="mt-1 min-h-[140px] w-full rounded-xl border border-[var(--border)] bg-[var(--bg)] px-3 py-2 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--red)]"
-              placeholder="Minimum 20 characters, max 500"
+              placeholder={t("contact.placeholders.reason")}
               maxLength={500}
             />
             <div className="mt-2 flex items-center justify-between text-xs text-[var(--muted)]">
               <span>{errors.reason ? "" : " "}</span>
-              <span>{form.reason.trim().length}/500</span>
+              <span>{t("contact.reasonCounter", { current: form.reason.trim().length, total: 500 })}</span>
             </div>
 
             {errors.reason ? (
@@ -237,10 +223,10 @@ export default function Contact() {
 
           <button
             type="submit"
-            disabled={submitting}
+            disabled={submitting || !canSubmit}
             className="w-full rounded-xl bg-[var(--red)] px-4 py-3 text-sm font-semibold text-white hover:bg-[var(--red-dark)] disabled:opacity-60"
           >
-            {submitting ? "..." : "Send"}
+            {submitting ? t("contact.buttons.sending") : t("contact.buttons.send")}
           </button>
         </form>
       </section>

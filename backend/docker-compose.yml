@@ -11,7 +11,7 @@ services:
       - ADMIN_USERNAME=${ADMIN_USERNAME}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - DEEPL_BASE_URL=https://api-free.deepl.com
-      - DEEPL_API_KEY=${DEEPL_API_KEY}
+      - DEEPL_AUTH_KEY=${DEEPL_AUTH_KEY}
 
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/api/projects"]

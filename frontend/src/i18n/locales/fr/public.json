@@ -7,7 +7,6 @@
     "contact": "Contact",
     "menu": "Menu"
   },
-
   "home": {
     "heroTitle": "Salut, je m’appelle {{name}}",
     "heroSubtitle": "Je crée des applications web modernes et des services backend.",
@@ -37,25 +36,24 @@
     },
     "skillsTitle": "Compétences"
   },
-
   "projects": {
     "title": "Projets",
     "subtitle": "Une sélection de projets que j’ai réalisés.",
     "whatIDid": "Ce que j’ai fait",
     "techStack": "Technos",
     "languages": "Langages",
-    "frameworks": "Frameworks",
+    "frameworks": "Cadres",
     "links": "Liens",
     "liveSite": "Site en ligne",
     "sourceCode": "Code source"
   },
-
   "experiencePage": {
     "title": "Expérience & Éducation",
     "subtitle": "Un aperçu de mon parcours professionnel et académique.",
     "sections": {
       "experience": "Expérience",
-      "education": "Éducation"
+      "education": "Éducation",
+      "skills": "Compétences"
     },
     "experience": [
       {
@@ -93,7 +91,7 @@
       {
         "title": "Champlain Pet Clinic — Application Web Full Stack (Projet d’équipe)",
         "org": "Projet scolaire",
-        "dates": "Sep 2025 — Nov 2025",
+        "dates": "Sep 2025 - Nov 2025",
         "bullets": [
           "Création d’une application microservices full stack pour gérer les animaux, rendez-vous, commandes et inventaire (clients et employés).",
           "Contribution au sein de l’équipe produit, avec rotation des rôles : Product Owner, Scrum Master et développeur."
@@ -118,16 +116,19 @@
         "school": "Collège Champlain St-Lambert",
         "dates": "Prévu : juin 2026"
       }
-    ]
+    ],
+    "skillsSubtitle": "Un aperçu rapide des outils et des technologies que j'utilise.",
+    "buttons": {
+      "viewResponsibilities": "Voir les responsabilités",
+      "hideResponsibilities": "Masquer les responsabilités"
+    }
   },
-
   "resumePage": {
     "title": "CV",
     "subtitle": "Téléchargez une copie de mon CV (PDF).",
     "download": "Télécharger le CV",
     "open": "Ouvrir dans un nouvel onglet"
   },
-
   "contact": {
     "title": "Contact",
     "subtitle": "Vous voulez me contacter ? Envoyez-moi un message et je vous répondrai.",
@@ -142,12 +143,81 @@
       "emailRequired": "Le courriel est requis.",
       "emailInvalid": "Veuillez entrer un courriel valide.",
       "messageRequired": "Le message est requis.",
-      "messageTooShort": "Le message doit contenir au moins 10 caractères."
+      "messageTooShort": "Le message doit contenir au moins 10 caractères.",
+      "fullNameRequired": "Le nom complet est requis",
+      "phoneRequired": "Le téléphone est obligatoire",
+      "phoneInvalid": "Le numéro de téléphone doit comporter exactement 10 chiffres",
+      "reasonRequired": "Le motif est requis",
+      "reasonTooShort": "Le motif doit être composé d'au moins {{min}} caractères",
+      "reasonTooLong": "La raison ne doit pas dépasser {{max}} caractères"
     },
     "success": {
       "title": "Message envoyé !",
       "message": "Merci pour votre message. Je répondrai dès que possible.",
-      "newMessage": "Envoyer un autre message"
+      "newMessage": "Envoyer un autre message",
+      "back": "Retour"
+    },
+    "labels": {
+      "fullName": "Nom complet",
+      "email": "Contact Email",
+      "phone": "Numéro de contact",
+      "reason": "Motif du contact"
+    },
+    "placeholders": {
+      "fullName": "Nom complet",
+      "email": "email@example.com",
+      "phone": "(514) 555-1234",
+      "reason": "Minimum 20 caractères, maximum 500"
+    },
+    "buttons": {
+      "send": "Envoyer",
+      "sending": "Envoi..."
+    },
+    "phoneCounter": "Chiffres {{current}}/{{total}}",
+    "reasonCounter": "{{current}}/{{total}}",
+    "errors": {
+      "sendFailed": "Échec de l'envoi"
+    }
+  },
+  "testimonials": {
+    "title": "Témoignages",
+    "subtitle": "Avis de personnes avec qui j’ai travaillé.",
+    "loading": "Chargement des témoignages...",
+    "empty": "Aucun témoignage pour le moment. Soyez le premier à en laisser un !",
+    "add": "Ajouter un témoignage",
+    "counter": "{{current}} / {{total}}",
+    "sentForReview": "Envoyé pour révision.",
+    "errors": {
+      "loadFailed": "Impossible de charger les témoignages.",
+      "submitFailed": "Impossible d’envoyer le témoignage."
+    },
+    "confirm": {
+      "title": "Merci !",
+      "sentForReview": "Votre témoignage a été envoyé pour révision."
+    },
+    "modal": {
+      "title": "Ajouter un témoignage",
+      "pendingNote": "Votre témoignage sera envoyé en tant que {{status}} jusqu’à approbation.",
+      "statusPending": "En attente",
+      "nameLabel": "Nom *",
+      "companyLabel": "Entreprise (optionnel)",
+      "relationLabel": "Lien avec moi *",
+      "messageLabel": "Témoignage *",
+      "messageHint": "Min {{min}}, max {{max}} caractères",
+      "placeholders": {
+        "name": "Jane Doe",
+        "company": "Acme Inc.",
+        "relation": "Gestionnaire / Collègue / Client / Professeur...",
+        "message": "Écrivez votre témoignage ici..."
+      },
+      "submit": "Envoyer",
+      "submitting": "Envoi..."
+    },
+    "validation": {
+      "nameRequired": "Le nom est requis.",
+      "relationRequired": "Le lien avec moi est requis.",
+      "minChars": "Le témoignage doit contenir au moins {{min}} caractères.",
+      "maxChars": "Le témoignage doit contenir au maximum {{max}} caractères."
     }
   }
 }

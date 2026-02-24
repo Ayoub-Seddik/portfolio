@@ -43,6 +43,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/experiences/**").permitAll()
                         .requestMatchers("/api/educations/**").permitAll()
                         .requestMatchers("/api/skills/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/translate/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/contact").permitAll()
 
                         .requestMatchers("/api/testimonials/**").permitAll()
